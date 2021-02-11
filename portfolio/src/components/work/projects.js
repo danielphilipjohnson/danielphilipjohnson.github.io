@@ -6,7 +6,7 @@ import { faFirefox } from "@fortawesome/free-brands-svg-icons"
 
 // import BtnGroup from "./btns"
 
-// import getBadgeLogo from "../../utils/getBadgeLogo"
+import getBadgeLogo from "../../utils/getBadgeLogo"
 import calculatorImage from "../../images/calculator-desktop.png"
 import bg from "../../images/overlay-bg.png"
 import "./projects.css"
@@ -37,7 +37,7 @@ function Projects() {
                       ProjectBadges.map(badge => {
                         return (
                           <span className="badge-tech" key={badge}>
-                            {/* {getBadgeLogo(badge)} */}
+                            {getBadgeLogo(badge)}
 
                             {badge}
                           </span>
