@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
-import { useStaticQuery, graphql, Link } from "gatsby";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import "./nav.css";
-import { library } from "@fortawesome/fontawesome-svg-core";
+import React, { useState, useRef } from "react"
+import { useStaticQuery, graphql, Link } from "gatsby"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { fab } from "@fortawesome/free-brands-svg-icons"
+import "./nav.css"
+import { library } from "@fortawesome/fontawesome-svg-core"
 
-import profilePhoto from "../../images/profile-md.jpg";
+import profilePhoto from "../../images/profile-md.jpg"
 
 import {
   faGithubAlt,
@@ -13,7 +13,7 @@ import {
   faLinkedinIn,
   faStackOverflow,
   faCodepen,
-} from "@fortawesome/free-brands-svg-icons";
+} from "@fortawesome/free-brands-svg-icons"
 library.add(
   fab,
   faGithubAlt,
@@ -21,39 +21,39 @@ library.add(
   faLinkedinIn,
   faStackOverflow,
   faCodepen
-);
+)
 
 function Nav() {
-  const { site } = useStaticQuery(siteQuery);
-  const [openNav, setOpenNav] = useState(false);
-  const menuRef = useRef();
-  const navRef = useRef();
-  const menuBrandRef = useRef();
-  const menuNavRef = useRef();
+  const { site } = useStaticQuery(siteQuery)
+  const [openNav, setOpenNav] = useState(false)
+  const menuRef = useRef()
+  const navRef = useRef()
+  const menuBrandRef = useRef()
+  const menuNavRef = useRef()
 
   const openMenu = () => {
-    const htmlMenuNodes = menuNavRef.current.children[0].children;
-    var menuItems = Array.from(htmlMenuNodes);
+    const htmlMenuNodes = menuNavRef.current.children[0].children
+    var menuItems = Array.from(htmlMenuNodes)
 
     if (!openNav) {
-      setOpenNav(true);
-      menuRef.current.classList.add("close");
-      navRef.current.classList.add("show");
-      menuBrandRef.current.classList.add("show");
-      menuNavRef.current.classList.add("show");
+      setOpenNav(true)
+      menuRef.current.classList.add("closed")
+      navRef.current.classList.add("show")
+      menuBrandRef.current.classList.add("show")
+      menuNavRef.current.classList.add("show")
 
-      menuItems.forEach((item) => item.classList.add("show"));
+      menuItems.forEach(item => item.classList.add("show"))
     } else {
-      setOpenNav(false);
-      menuRef.current.classList.remove("close");
+      setOpenNav(false)
+      menuRef.current.classList.remove("closed")
 
-      navRef.current.classList.remove("show");
-      menuBrandRef.current.classList.remove("show");
-      menuNavRef.current.classList.remove("show");
+      navRef.current.classList.remove("show")
+      menuBrandRef.current.classList.remove("show")
+      menuNavRef.current.classList.remove("show")
 
-      menuItems.forEach((item) => item.classList.remove("show"));
+      menuItems.forEach(item => item.classList.remove("show"))
     }
-  };
+  }
   return (
     <aside>
       <button ref={menuRef} className="menu-btn" onClick={openMenu} role="menu">
@@ -99,7 +99,7 @@ function Nav() {
             </li>
           </ul>
           <div className="icons">
-            {site.siteMetadata.socials.map((social) => {
+            {site.siteMetadata.socials.map(social => {
               return (
                 <a
                   key={social.FontAwesomeIcon.logo}
@@ -115,16 +115,16 @@ function Nav() {
                     size="2x"
                   />
                 </a>
-              );
+              )
             })}
           </div>
         </div>
       </nav>
     </aside>
-  );
+  )
 }
 
-export default Nav;
+export default Nav
 
 const siteQuery = graphql`
   query {
@@ -143,4 +143,4 @@ const siteQuery = graphql`
       }
     }
   }
-`;
+`

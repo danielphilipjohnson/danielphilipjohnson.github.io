@@ -31,17 +31,17 @@ aside {
 .menu-btn .btn-line:last-child {
   margin: 0;
 }
-.menu-btn.close {
+.menu-btn.closed {
   /* transform: rotate(180deg); */
   background-color: #0a0a22;
 }
-.menu-btn.close .btn-line:first-child {
+.menu-btn.closed .btn-line:first-child {
   transform: rotate(45deg) translate(5px, 5px);
 }
-.menu-btn.close .btn-line:nth-child(2) {
+.menu-btn.closed .btn-line:nth-child(2) {
   opacity: 0;
 }
-.menu-btn.close .btn-line:nth-child(3) {
+.menu-btn.closed .btn-line:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -6px);
 }
 .menu {
@@ -204,3 +204,4 @@ aside {
     font-size: 2rem;
   }
 }
+margin-top: 3.25rem;

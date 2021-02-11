@@ -1,7 +1,9 @@
 body {
   background-color: #efefef;
 }
-
+main {
+  background-color: #efefef;
+}
 main nav {
   margin-top: 3.25rem;
 }
