@@ -1,5 +1,15 @@
-import React from "react";
-import "./blog-type.css";
+import React from "react"
+import "./blog-type.css"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faFont,
+  faCamera,
+  faQuoteLeft,
+  faLink,
+  faComments,
+  faMusic,
+  faVideo,
+} from "@fortawesome/free-solid-svg-icons"
 
 const BlogType = () => {
   return (
@@ -22,46 +32,43 @@ const BlogType = () => {
                 data-target="#myModal"
               >
                 <p className="page-link">
-                  <i className="fa fa-font text" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faFont} className="text" />
                   <span>Text</span>
                 </p>
               </li>
               <li className="page-item">
                 <p className="page-link">
-                  <i className="fa fa-camera photo" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faCamera} className="photo" />
                   <span>Photo</span>
                 </p>
               </li>
               <li className="page-item d-none d-sm-flex">
                 <p className="page-link">
-                  <i className="fa fa-quote-left quote" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faQuoteLeft} className="quote" />
                   <span>Quote</span>
                 </p>
               </li>
               <li className="page-item d-none d-sm-flex">
                 <p className="page-link">
-                  <i className="fa fa-link link" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faLink} className="link" />
                   <span>Link</span>
                 </p>
               </li>
               <li className="page-item d-none d-md-flex">
                 <p className="page-link">
-                  <i className="fa fa-comments chat" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faComments} className="chat" />
                   <span>Chat</span>
                 </p>
               </li>
               <li className="page-item">
                 <p className="page-link">
-                  <i className="fa fa-music audio" aria-hidden="true"></i>
+                  <FontAwesomeIcon icon={faMusic} className="audio" />
                   <span>Audio</span>
                 </p>
               </li>
               <li className="page-item">
                 <p className="page-link">
-                  <i
-                    className="fa fa-video-camera video"
-                    aria-hidden="true"
-                  ></i>
+                  <FontAwesomeIcon icon={faVideo} className="video" />
                   <span>Video</span>
                 </p>
               </li>
@@ -70,7 +77,7 @@ const BlogType = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BlogType;
+export default BlogType

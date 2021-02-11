@@ -25,3 +25,7 @@ header {
   padding-top: 2rem;
   text-align: center;
 }
+
+a:hover {
+  text-decoration: none;
+}

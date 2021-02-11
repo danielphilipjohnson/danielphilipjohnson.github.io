@@ -22,11 +22,11 @@
   }
 }
 
-.page-link i {
+.page-link svg {
   font-size: 2.6rem;
 }
 
-.page-link i:hover {
+.page-link svg:hover {
   transform: scale(1.2);
 }
 
