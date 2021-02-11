@@ -1,11 +1,13 @@
 @import url("https://fonts.googleapis.com/css?family=Russo+One");
 
 main {
-  background-color: #001935;
   line-height: 22px;
   font-family: Helvetica Neue, Helvetica, sans-serif;
 }
-
+.main--markdown,
+.main--markdown main {
+  background-color: #001935;
+}
 img {
   width: 100%;
 }

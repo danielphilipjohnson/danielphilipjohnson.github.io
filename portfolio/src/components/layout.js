@@ -8,13 +8,13 @@
 import React from "react"
 import PropTypes from "prop-types"
 import Navbar from "./nav/Nav"
-import "./layout.css"
+// import "./layout.css"
 
-const Layout = ({ children }) => {
+const Layout = ({ cls, children }) => {
   return (
     <>
       <Navbar />
-      <main>{children}</main>
+      <main className={cls}>{children}</main>
     </>
   )
 }

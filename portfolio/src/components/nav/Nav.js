@@ -79,16 +79,24 @@ function Nav() {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/about/" className="nav-link" activeClassName="current">
-                About Me
+              <Link
+                to="/calculator/"
+                className="nav-link"
+                activeClassName="current"
+              >
+                Calculator App
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/work/" className="nav-link" activeClassName="current">
-                My Work
+              <Link
+                to="/markdown/"
+                className="nav-link"
+                activeClassName="current"
+              >
+                Tumblr Markdown
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link
                 to="/contact/"
                 className="nav-link"
@@ -96,7 +104,7 @@ function Nav() {
               >
                 How To Reach Me
               </Link>
-            </li>
+            </li> */}
           </ul>
           <div className="icons">
             {site.siteMetadata.socials.map(social => {

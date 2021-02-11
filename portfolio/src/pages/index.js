@@ -1,21 +1,22 @@
 import React from "react"
-import { Link } from "gatsby"
 import "@fontsource/orbitron"
 import "./index.css"
+import { Link } from "gatsby"
+
 import Layout from "../components/layout"
 import Projects from "../components/work/projects"
-import Image from "../components/image"
+
 import SEO from "../components/seo"
 
 const IndexPage = () => (
-  <Layout>
+  <Layout cls={"main--home"}>
     <SEO title="Home" />
-    <h1>React Projects</h1>
-    <br />
-    <br />
-    <Projects />
 
-    <Link to="/markdown/">Go to "Using TypeScript"</Link>
+    <header>
+      <h1 className="home--header">React Projects</h1>
+    </header>
+
+    <Projects />
   </Layout>
 )
 
