@@ -1,4 +1,6 @@
-import React from "react";
+import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { fab } from "@fortawesome/free-brands-svg-icons"
 
 const Footer = () => {
   return (
@@ -32,7 +34,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-twitter"></i>
+                <FontAwesomeIcon icon={[`fab`, `twitter`]} />
               </a>
             </li>
 
@@ -42,7 +44,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-facebook"></i>
+                <FontAwesomeIcon icon={[`fab`, `facebook`]} />
               </a>
             </li>
 
@@ -52,6 +54,8 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
               >
+                <FontAwesomeIcon icon={[`fab`, `github`]} />
+
                 <i className="fab fa-github"></i>
               </a>
             </li>
@@ -62,7 +66,7 @@ const Footer = () => {
                 target="_blank"
                 rel="noreferrer"
               >
-                <i className="fab fa-linkedin"></i>
+                <FontAwesomeIcon icon={[`fab`, `linkedin`]} />
               </a>
             </li>
           </ul>
@@ -78,7 +82,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

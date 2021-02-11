@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const NavbarContainer = () => {
   return (
@@ -30,30 +30,10 @@ const NavbarContainer = () => {
               Codepen <span className="sr-only">(current)</span>
             </a>
           </li>
-          <li className="nav-item">
-            <a
-              className="nav-link"
-              href="https://github.com/danielphilipjohnson/"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Github
-            </a>
-          </li>
-          <li className="nav-item">
-            <a
-              className="nav-link"
-              href="https://danielphilipjohnson.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Personal Website
-            </a>
-          </li>
         </ul>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default NavbarContainer;
+export default NavbarContainer
