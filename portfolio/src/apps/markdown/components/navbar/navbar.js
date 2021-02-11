@@ -1,5 +1,16 @@
-import React from "react";
-import "./navbar.css";
+import React from "react"
+import "./navbar.css"
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faHome,
+  faCompass,
+  faEnvelope,
+  faCommenting,
+  faBolt,
+  faUser,
+  faPencil,
+} from "@fortawesome/free-solid-svg-icons"
 
 const Navbar = () => {
   return (
@@ -36,32 +47,44 @@ const Navbar = () => {
         <ul className="navbar-nav mx-auto col-auto d-flex align-items-center">
           <li className="nav-item active">
             <a className="nav-link" href="/" aria-label="home">
-              <i className="fa fa-home nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon icon={faHome} className="nav-icons" size="3x" />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="suggested post">
-              <i className="fa fa-compass nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon
+                icon={faCompass}
+                className="nav-icons"
+                size="3x"
+              />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="messages">
-              <i className="fa fa-envelope nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                className="nav-icons"
+                size="3x"
+              />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="replies">
-              <i className="fa fa-commenting nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon
+                icon={faCommenting}
+                className="nav-icons"
+                size="3x"
+              />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="hot posts">
-              <i className="fa fa-bolt nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon icon={faBolt} className="nav-icons" size="3x" />
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="find users">
-              <i className="fa fa-user nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon icon={faUser} className="nav-icons" size="3x" />
             </a>
           </li>
           <li
@@ -71,13 +94,13 @@ const Navbar = () => {
             aria-label="make posts"
           >
             <a className="nav-link" href="/" aria-label="make post">
-              <i className="fa fa-pencil nav-icons" aria-hidden="true"></i>
+              <FontAwesomeIcon icon={faPencil} className="nav-icons" />
             </a>
           </li>
         </ul>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar
