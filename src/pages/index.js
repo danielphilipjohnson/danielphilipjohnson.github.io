@@ -1,12 +1,11 @@
-import React from "react"
-import "@fontsource/orbitron"
-import "./index.css"
-import { Link } from "gatsby"
+import React from "react";
+import "@fontsource/orbitron";
+import "./index.css";
 
-import Layout from "../components/layout"
-import Projects from "../components/work/projects"
+import Layout from "../components/layout";
+import Projects from "../components/work/projects";
 
-import SEO from "../components/seo"
+import SEO from "../components/seo";
 
 const IndexPage = () => (
   <Layout cls={"main--home"}>
@@ -18,6 +17,6 @@ const IndexPage = () => (
 
     <Projects />
   </Layout>
-)
+);
 
-export default IndexPage
+export default IndexPage;

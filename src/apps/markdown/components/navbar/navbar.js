@@ -6,10 +6,10 @@ import {
   faHome,
   faCompass,
   faEnvelope,
-  faCommenting,
+  faComment,
   faBolt,
   faUser,
-  faPencil,
+  faPencilAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
@@ -71,7 +71,7 @@ const Navbar = () => {
           <li className="nav-item">
             <a className="nav-link" href="/" aria-label="replies">
               <FontAwesomeIcon
-                icon={faCommenting}
+                icon={faComment}
                 className="nav-icons"
                 size="3x"
               />
@@ -87,15 +87,10 @@ const Navbar = () => {
               <FontAwesomeIcon icon={faUser} className="nav-icons" size="3x" />
             </a>
           </li>
-          <li
-            className="nav-item"
-            // data-toggle="modal"
-            // data-target="#myModal"
-            aria-label="make posts"
-          >
+          <li className="nav-item" aria-label="make posts">
             <a className="nav-link" href="/" aria-label="make post">
               <FontAwesomeIcon
-                icon={faPencil}
+                icon={faPencilAlt}
                 className="nav-icons"
                 size="3x"
               />

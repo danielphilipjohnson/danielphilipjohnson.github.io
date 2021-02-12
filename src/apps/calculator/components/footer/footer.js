@@ -1,6 +1,5 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { fab } from "@fortawesome/free-brands-svg-icons"
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Footer = () => {
   return (
@@ -75,14 +74,16 @@ const Footer = () => {
         <div className="main__footer__bottom">
           <p>
             Copyright &copy; 2020. All Rights Reserved | Designed and built with{" "}
-            <span className="heart">❤️</span>
+            <span className="heart" role="img" aria-label="love">
+              ❤️
+            </span>
             by{" "}
             <a href="https://danielphilipjohnson.com">Daniel Philip Johnson </a>
           </p>
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
