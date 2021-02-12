@@ -1,9 +1,10 @@
 {
-  "name": "gatsby-starter-default",
+  "name": "react-projects-built-by-daniel-johnson",
+  "homepage": "https://danielphilipjohnson.github.io/",
   "private": true,
-  "description": "A simple starter to get up and developing quickly with Gatsby",
-  "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "description": "React projects built by Daniel Johnson",
+  "version": "1.0.2",
+  "author": "Daniel Philip Johnson <daniel-phil-johnson@gmail.com>",
   "dependencies": {
     "@fontsource/orbitron": "^4.2.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -29,11 +30,10 @@
     "react-markdown": "^5.0.3"
   },
   "devDependencies": {
-    "prettier": "2.2.1"
+    "prettier": "2.2.1",
+    "gh-pages": "^3.1.0"
   },
-  "keywords": [
-    "gatsby"
-  ],
+  "keywords": ["gatsby"],
   "license": "0BSD",
   "scripts": {
     "build": "gatsby build",
@@ -42,13 +42,16 @@
     "start": "npm run develop",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1",
+    "predeploy": "npm run build",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+    "url": "https://github.com/danielphilipjohnson/danielphilipjohnson.github.io"
   },
+
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/danielphilipjohnson/danielphilipjohnson.github.io/issues"
   }
 }
