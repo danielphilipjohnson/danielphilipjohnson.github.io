@@ -2,6 +2,9 @@
   box-shadow: 0 0 0 1px hsla(0, 0%, 100%, 0.13);
   background-color: #001935;
 }
+.navbar-markdown {
+  border-bottom: 1px solid rgba(239, 239, 239, 0.4);
+}
 .navbar.fixed-top {
   z-index: 9999;
 }

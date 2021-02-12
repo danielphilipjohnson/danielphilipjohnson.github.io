@@ -1,7 +1,7 @@
-import React from "react"
-import "./navbar.css"
+import React from "react";
+import "./navbar.css";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
   faCompass,
@@ -10,11 +10,11 @@ import {
   faBolt,
   faUser,
   faPencil,
-} from "@fortawesome/free-solid-svg-icons"
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   return (
-    <nav className="navbar fixed-top navbar-expand-lg navbar-dark p-0">
+    <nav className="navbar navbar-markdown navbar-expand-lg navbar-dark  p-0">
       <button
         className="navbar-toggler border-0"
         type="button"
@@ -104,7 +104,7 @@ const Navbar = () => {
         </ul>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

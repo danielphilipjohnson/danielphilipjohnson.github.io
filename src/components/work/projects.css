@@ -1,5 +1,7 @@
 /* projects */
-
+#responsive {
+  background-color: #3a3c55;
+}
 .projects .item {
   position: relative;
 }
@@ -169,3 +171,4 @@
   font-size: 2rem;
   height: 35px;
 }
+background-color: #3a3c55;
