@@ -1,0 +1,83 @@
+---
+/**
+ * Props:
+ *  - as: 'p' | 'span' | 'h1' ... (default 'p')
+ *  - variant: 'hero' | 'subtitle' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body' | 'body-sm' | 'caption' | 'subtle' | 'quote' | 'label' | 'button'
+ *  - weight: 'thin' | 'extralight' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold'
+ *  - align: 'left' | 'center' | 'right'
+ *  - tone: 'default' | 'muted' | 'accent' | 'danger'
+ *  - treatment: 'normal' | 'highlight' | 'underlined' | 'faded'
+ */
+const {
+  as = "p",
+  variant = "body",
+  weight = "normal",
+  align = "left",
+  tone = "default",
+  treatment = "normal",
+  class: clsFromProps = "",
+  ...attrs
+} = Astro.props;
+
+const vMap = {
+  hero: "text-[length:var(--fs-3)] md:text-[length:calc(var(--fs-3)*1.1)] leading-[1.1] tracking-tight",
+  subtitle:
+    "text-[length:var(--fs-1)] md:text-[length:calc(var(--fs-1)*1.1)] font-extralight",
+  h1: "text-[length:var(--fs-3)] leading-tight tracking-tight",
+  h2: "text-[length:var(--fs-2)] leading-tight tracking-tight",
+  h3: "text-[length:var(--fs-1)] leading-snug",
+  h4: "text-[length:var(--fs-0)] md:text-[length:var(--fs-1)] leading-snug",
+  h5: "text-[length:var(--fs-0)] leading-normal",
+  h6: "text-[length:var(--fs--1)] leading-normal",
+  "body-medium":
+    "text-[length:var(--fs-0)] font-medium leading-relaxed tracking-wide",
+  body: "text-[length:var(--fs-0)] leading-relaxed tracking-wide",
+  "body-sm": "text-[length:var(--fs--1)] leading-relaxed",
+  quote:
+    "text-[length:var(--fs-0)] italic font-light leading-relaxed tracking-wide",
+  caption: "text-[length:var(--fs--1)] font-light leading-normal",
+  subtle: "text-[length:var(--fs--1)] font-light leading-normal tracking-wide",
+  label: "text-[length:var(--fs--1)] font-medium tracking-wide",
+  button: "text-[length:var(--fs-0)] font-medium tracking-wide",
+};
+
+const wMap = {
+  thin: "font-thin",
+  extralight: "font-extralight",
+  light: "font-light",
+  normal: "font-normal",
+  medium: "font-medium",
+  semibold: "font-semibold",
+  bold: "font-bold",
+};
+const aMap = { left: "text-left", center: "text-center", right: "text-right" };
+const tMap = {
+  default: "text-[var(--fg)]",
+  muted: "text-[var(--muted)]",
+  accent: "text-[var(--accent)]",
+  danger: "text-[var(--color-danger-500)]",
+};
+const trMap = {
+  normal: "",
+  highlight:
+    "bg-[color-mix(in_oklab,var(--accent),transparent_90%)] px-1 py-0.5 rounded",
+  underlined: "underline decoration-[var(--accent)] underline-offset-2",
+  faded: "opacity-80",
+};
+
+const cls = [
+  "font-sans",
+  vMap[variant] ?? vMap.body,
+  wMap[weight] ?? "",
+  aMap[align] ?? "",
+  tMap[tone] ?? tMap.default,
+  trMap[treatment] ?? "",
+  clsFromProps,
+]
+  .filter(Boolean)
+  .join(" ");
+
+const Tag = as;
+---
+
+<Tag class={cls} {...attrs}><slot /></Tag>

@@ -1,0 +1,38 @@
+---
+/**
+ * Card
+ * Regions:
+ *  - default slot = body
+ *  - named slots: media, header, footer
+ * Props:
+ *  - clickable?: boolean (adds hover lift & focus outline on internal links)
+ *  - as?: 'article' | 'section' | 'div' (default 'article')
+ */
+const { clickable = false, as = "article" } = Astro.props;
+const cls = `card ${clickable ? "cursor-pointer hover:-translate-y-[1px]" : ""}`;
+---
+
+{
+  as === "section" ? (
+    <section class={cls}>
+      <slot name="media" />
+      <slot name="header" />
+      <slot />
+      <slot name="footer" />
+    </section>
+  ) : as === "div" ? (
+    <div class={cls}>
+      <slot name="media" />
+      <slot name="header" />
+      <slot />
+      <slot name="footer" />
+    </div>
+  ) : (
+    <article class={cls}>
+      <slot name="media" />
+      <slot name="header" />
+      <slot />
+      <slot name="footer" />
+    </article>
+  )
+}

@@ -1,0 +1,11 @@
+---
+import NowCard from "./NowCard.astro";
+const { title, items = [] } = Astro.props;
+---
+
+<section class="grid gap-3">
+  <h2 class="text-[var(--fs-1)] font-semibold">{title}</h2>
+  <div class="grid gap-3">
+    {items.map((i) => <NowCard {...i} />)}
+  </div>
+</section>

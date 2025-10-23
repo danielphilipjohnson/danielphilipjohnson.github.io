@@ -1,0 +1,47 @@
+---
+/**
+ * Props:
+ *  - items: string[]  (required)
+ *  - label?: string   (default "Now")
+ */
+const { items = [], label = "Now" } = Astro.props;
+const row = items.length ? items : ["No active items"];
+---
+
+<section
+  aria-label={label}
+  class="border-y [border-color:var(--border)] bg-[var(--surface-1)]"
+>
+  <div class="relative overflow-hidden">
+    <div class="ticker flex items-center gap-6 py-3 will-change-transform">
+      <!-- duplicate list for seamless loop -->
+      {
+        [...row, ...row].map((txt, i) => (
+          <span class="inline-flex items-center gap-2 text-[var(--muted)]">
+            <span class="inline-block size-1.5 rounded-full bg-[var(--accent)]" />
+            {txt}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .ticker {
+    animation: ticker 15s linear infinite;
+  }
+  @keyframes ticker {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker {
+      animation: none;
+    }
+  }
+</style>

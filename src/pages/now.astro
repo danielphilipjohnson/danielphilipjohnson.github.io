@@ -1,0 +1,139 @@
+---
+import Layout from "../layouts/Shell.astro";
+import NowLane from "../components/ui/NowLane.astro";
+import Stat from "../components/ui/Stat.astro";
+import Progress from "../components/ui/Progress.astro";
+import ActivityItem from "../components/ui/ActivityItem.astro";
+
+// Lanes (as you had)
+const thisWeek = [
+  {
+    title: "Astro Neon Workbench",
+    status: "wip",
+    nextMilestone: "Wire /feed.json",
+    eta: "Fri",
+    note: "Polish filters + keyboard a11y",
+  },
+];
+const nextUp = [
+  {
+    title: "Project Atlas OG Images",
+    status: "wip",
+    nextMilestone: "Satori template",
+    eta: "Next week",
+  },
+];
+
+// Small, honest metrics — update by hand or compute later
+const stats = {
+  doneThisWeek: 7,
+  activeWip: thisWeek.length,
+  nextReview: "Mon 09:00",
+};
+
+// Near-term milestones (top 3)
+const milestones = [
+  { title: "Project cards → keyboard affordances", progress: 70 },
+  { title: "Repo sync action (stars/last push)", progress: 40 },
+  { title: "OG image template", progress: 15 },
+];
+
+// Lightweight activity (human-written or script-fed later)
+const activity = [
+  {
+    when: "Thu",
+    tag: "commit",
+    title: "Refactor Text component for Tailwind v4 typed sizes",
+    detail: "Replace text-[var(--fs-)] with text-[length:…]",
+  },
+  { when: "Wed", tag: "deploy", title: "Deployed /dev-theme playground" },
+  {
+    when: "Tue",
+    tag: "note",
+    title: "Theme tokens v1 set",
+    detail: "Stone/Moss baseline, status tokens wired",
+  },
+];
+---
+
+<Layout
+  title="Now — Project Atlas"
+  description="What I’m actively building this week."
+>
+  <!-- Intro / focus -->
+  <section class="grid gap-2">
+    <h1 class="text-[length:var(--fs-2)] font-semibold">Now</h1>
+    <p class="text-[var(--muted)]">
+      Current focus: Ship a clean Project Atlas MVP, then polish OG images &
+      keyboard a11y.
+    </p>
+  </section>
+
+  <!-- Stats strip -->
+  <section class="grid gap-3 md:grid-cols-3">
+    <Stat
+      label="Done this week"
+      value={stats.doneThisWeek}
+      hint="small, steady wins"
+    />
+    <Stat label="Active WIP" value={stats.activeWip} hint="in This Week lane" />
+    <Stat label="Next review" value={stats.nextReview} hint="weekly check-in" />
+  </section>
+
+  <!-- Milestones -->
+  <section class="grid gap-4">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Milestones</h2>
+    <div class="grid gap-3">
+      {
+        milestones.map((m) => (
+          <div class="rounded-xl border p-4 bg-[var(--surface-1)] [border-color:var(--card-border)]">
+            <div class="mb-2 flex items-center justify-between gap-3">
+              <span class="font-medium">{m.title}</span>
+              <span class="text-[var(--fs--1)] text-[var(--muted)]">
+                {m.progress}%
+              </span>
+            </div>
+            <Progress value={m.progress} />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Lanes -->
+  <section class="grid gap-8">
+    <NowLane title="This Week" items={thisWeek} />
+    <NowLane title="Next Up" items={nextUp} />
+  </section>
+
+  <!-- Activity / changelog -->
+  <section class="grid gap-3">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Recent activity</h2>
+    <ul class="grid gap-2">
+      {activity.map((a) => <ActivityItem {...a} />)}
+    </ul>
+  </section>
+
+  <!-- Tools / stack (optional quick badges) -->
+  <section class="grid gap-2">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Current stack</h2>
+    <div class="flex flex-wrap gap-2">
+      <span
+        class="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[var(--fs--1)] [border-color:var(--card-border)]"
+        >Astro</span
+      >
+      <span
+        class="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[var(--fs--1)] [border-color:var(--card-border)]"
+        >Tailwind v4</span
+      >
+      <span
+        class="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[var(--fs--1)] [border-color:var(--card-border)]"
+        >Lucide</span
+      >
+      <span
+        class="inline-flex items-center gap-1 rounded-md border px-2 py-1 text-[var(--fs--1)] [border-color:var(--card-border)]"
+        >Satori (OG)</span
+      >
+    </div>
+  </section>
+</Layout>

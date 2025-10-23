@@ -1,0 +1,8 @@
+---
+import TechSection from "./TechSection.astro";
+import stack from "../../data/stack";
+---
+
+<div class="grid gap-6">
+  {stack.map((cat) => <TechSection {...cat} />)}
+</div>

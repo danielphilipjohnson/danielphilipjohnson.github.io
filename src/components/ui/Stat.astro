@@ -1,0 +1,14 @@
+---
+const { label, value, hint = "", class: cls = "" } = Astro.props;
+---
+
+<div
+  class={[
+    "grid gap-0.5 rounded-lg border p-3 bg-[var(--surface-1)] [border-color:var(--card-border)] min-w-[9rem]",
+    cls,
+  ].join(" ")}
+>
+  <div class="text-[var(--fs--1)] text-[var(--muted)]">{label}</div>
+  <div class="text-[var(--fs-1)] font-semibold">{value}</div>
+  {hint && <div class="text-[var(--fs--2)] text-[var(--muted)]">{hint}</div>}
+</div>

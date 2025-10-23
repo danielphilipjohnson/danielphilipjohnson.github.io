@@ -1,0 +1,103 @@
+---
+/**
+ * Quote (token-driven, zero-JS)
+ *
+ * Props:
+ *  - author?: string                // e.g., "Shunryu Suzuki"
+ *  - source?: string                // e.g., "Zen Mind, Beginner's Mind"
+ *  - href?: string                  // link for the source (optional)
+ *  - align?: 'left' | 'center'      // default 'left'
+ *  - variant?: 'plain' | 'border' | 'card' | 'pull'  // default 'plain'
+ *  - max?: 'sm' | 'md' | 'lg' | 'xl' | '2xl'         // container width, default '2xl'
+ *  - tone?: 'default' | 'muted'     // quote text tone, default 'default'
+ *  - mark?: boolean                 // decorative quote mark, default true
+ *
+ * Slots:
+ *  - default: the quoted text (supports multiline / markup)
+ */
+const {
+  author = "",
+  source = "",
+  href = "",
+  align = "left",
+  variant = "plain",
+  max = "2xl",
+  tone = "default",
+  mark = true,
+  class: clsFromProps = "",
+  ...attrs
+} = Astro.props;
+
+const maxMap = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-xl",
+  "2xl": "max-w-2xl",
+};
+const alignCls = align === "center" ? "mx-auto text-center" : "";
+const toneCls = tone === "muted" ? "text-[var(--muted)]" : "text-[var(--fg)]";
+
+const shell =
+  variant === "card"
+    ? "rounded-xl border p-6 md:p-8 bg-[var(--surface-1)] [border-color:var(--card-border)]"
+    : variant === "border"
+      ? "pl-4 border-l-4 [border-color:var(--border)]"
+      : variant === "pull"
+        ? "relative pl-8 before:absolute before:left-0 before:top-1 before:text-[3rem] before:leading-none before:content-[open-quote] before:text-[color-mix(in_oklab,var(--accent),transparent_40%)]"
+        : "";
+
+const quoteMark =
+  mark && variant !== "pull"
+    ? "relative before:absolute before:-top-3 before:left-0 before:text-[3rem] before:leading-none before:opacity-20 before:content-[open-quote] before:text-[var(--accent)]"
+    : "";
+
+const textBase = "font-serif text-[var(--fs-1)] leading-relaxed";
+const citeBase = "mt-2 text-[var(--fs--1)] text-[var(--muted)]";
+
+const figureCls = [maxMap[max] ?? maxMap["2xl"], alignCls, clsFromProps]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<figure class={figureCls} {...attrs}>
+  <blockquote class={["relative", shell].filter(Boolean).join(" ")}>
+    <p
+      class={[
+        textBase,
+        toneCls,
+        quoteMark,
+        align === "center" ? "mx-auto" : "",
+        variant === "border" ? "ml-1" : "",
+      ].join(" ")}
+    >
+      <slot />
+    </p>
+  </blockquote>
+
+  {
+    (author || source) && (
+      <figcaption
+        class={[
+          "italic",
+          align === "center" ? "text-center" : "",
+          citeBase,
+        ].join(" ")}
+      >
+        {author && <span>— {author}</span>}
+        {author && source && <span>, </span>}
+        {source &&
+          (href ? (
+            <a
+              href={href}
+              class="underline underline-offset-2 decoration-[var(--accent)] hover:opacity-90"
+            >
+              {source}
+            </a>
+          ) : (
+            <cite>{source}</cite>
+          ))}
+      </figcaption>
+    )
+  }
+</figure>

@@ -1,0 +1,117 @@
+---
+import { Image } from 'astro:assets';
+
+/**
+ * ImageCard (token-driven, zero-JS)
+ * Props:
+ *  - src (string), alt (string)
+ *  - caption?: string
+ *  - href?: string                 // wrap image in link
+ *  - ratio?: '16/9'|'4/3'|'1/1'    // default '16/9'
+ *  - width?: number; height?: number  // prevents CLS if known
+ *  - tone?: 'accent'|'moss'|'clay'|'water'|'stone' (corner color)
+ *  - rounded?: boolean (default true)
+ */
+const {
+  src,
+  alt,
+  caption = "",
+  href = "",
+  ratio = "16/9",
+  width,
+  height,
+  tone = "clay",
+  rounded = true,
+  class: clsFromProps = "",
+  ...attrs
+} = Astro.props;
+
+const ratioMap: Record<string, string> = {
+  "16/9": "aspect-[16/9]",
+  "4/3": "aspect-[4/3]",
+  "1/1": "aspect-square",
+};
+const cornerTone =
+  {
+    accent: "var(--accent)",
+    moss: "var(--color-moss-400)",
+    clay: "var(--color-clay-300)",
+    water: "var(--color-water-400)",
+    stone: "var(--border)",
+  }[tone] ?? "var(--accent)";
+
+const wrapCls = [
+  "relative p-4 border bg-[var(--surface-1)] [border-color:var(--card-border)]",
+  rounded ? "rounded-xl" : "rounded-md",
+  "shadow",
+  "[box-shadow:var(--shadow-1)]",
+  clsFromProps,
+].join(" ");
+
+const cornerBase = "absolute w-4 h-4";
+const cornerBorder = "border-[color:var(--corner)]";
+const mediaCls = [
+  "overflow-hidden",
+  rounded ? "rounded-lg" : "rounded",
+  ratioMap[ratio] ?? ratioMap["16/9"],
+  "border",
+  "[border-color:var(--card-border)]",
+].join(" ");
+const captionId = caption ? `cap-${crypto.randomUUID()}` : undefined;
+---
+
+<figure
+  class={wrapCls}
+  style={`--corner:${cornerTone}`}
+  aria-labelledby={caption ? captionId : undefined}
+  {...attrs}
+>
+  <!-- decorative corners -->
+  <span
+    class={`${cornerBase} ${cornerBorder} top-0 left-0 border-t-2 border-l-2`}
+    aria-hidden="true"></span>
+  <span
+    class={`${cornerBase} ${cornerBorder} top-0 right-0 border-t-2 border-r-2`}
+    aria-hidden="true"></span>
+  <span
+    class={`${cornerBase} ${cornerBorder} bottom-0 left-0 border-b-2 border-l-2`}
+    aria-hidden="true"></span>
+  <span
+    class={`${cornerBase} ${cornerBorder} bottom-0 right-0 border-b-2 border-r-2`}
+    aria-hidden="true"></span>
+
+  <div class={`mb-2 ${mediaCls}`}>
+    {
+      href ? (
+        <a href={href} class="block focus-ring">
+          <Image
+            src={src}
+            alt={alt}
+            width={width}
+            height={height}
+            class="h-full w-full object-cover"
+          />
+        </a>
+      ) : (
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          class="h-full w-full object-cover"
+        />
+      )
+    }
+  </div>
+
+  {
+    caption && (
+      <figcaption
+        id={captionId}
+        class="pt-2 text-center text-[var(--fs--1)] text-[var(--muted)]"
+      >
+        {caption}
+      </figcaption>
+    )
+  }
+</figure>

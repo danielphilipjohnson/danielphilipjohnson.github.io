@@ -1,0 +1,87 @@
+---
+/**
+ * SocialLink (icon-only, zero-JS)
+ *
+ * Props:
+ *  - href: string (required)
+ *  - label: string (required)  // for a11y, used as aria-label + optional title
+ *  - size?: 'sm'|'md'|'lg' (default 'md')   // 32 / 40 / 48 px
+ *  - variant?: 'ghost'|'soft'|'solid' (default 'ghost')
+ *  - tone?: 'muted'|'fg'|'accent' (default 'muted') // base color
+ *  - hoverTone?: 'accent'|'fg'|'muted' (default 'accent')
+ *  - external?: boolean (auto-detected by default)
+ *  - title?: string (defaults to label)
+ *
+ * Slot:
+ *  - default: inline SVG (uses currentColor)
+ */
+const {
+  href,
+  label,
+  size = "md",
+  variant = "ghost",
+  tone = "muted",
+  hoverTone = "accent",
+  external,
+  title = label,
+  class: classFromProps = "",
+  target,
+  rel,
+} = Astro.props;
+
+if (!href) throw new Error("SocialLink: `href` is required.");
+if (!label) throw new Error("SocialLink: `label` is required.");
+
+const isHttp = /^https?:\/\//i.test(href);
+const autoExternal =
+  typeof external === "boolean"
+    ? external
+    : isHttp && !href.startsWith(Astro.site?.origin ?? "");
+const safeTarget = autoExternal ? (target ?? "_blank") : target;
+const safeRel = autoExternal ? (rel ?? "noopener noreferrer") : rel;
+
+const sizeCls =
+  size === "lg"
+    ? "h-12 w-12 [&_svg]:size-6"
+    : size === "sm"
+      ? "h-8 w-8 [&_svg]:size-4"
+      : "h-10 w-10 [&_svg]:size-5";
+
+const toneMap = {
+  muted: "text-[var(--muted)]",
+  fg: "text-[var(--fg)]",
+  accent: "text-[var(--accent)]",
+} as const;
+const hoverMap = {
+  accent: "hover:text-[var(--accent)]",
+  fg: "hover:text-[var(--fg)]",
+  muted: "hover:text-[var(--muted)]",
+} as const;
+
+const base = `inline-flex items-center justify-center rounded-full ${sizeCls} transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)] [&_svg]:shrink-0`;
+
+const variantCls =
+  variant === "solid"
+    ? "bg-[var(--accent)] text-[var(--accent-contrast)] hover:brightness-95"
+    : variant === "soft"
+      ? "text-[color:inherit] border [border-color:color-mix(in_oklab,currentColor_45%,var(--bg))] bg-[color-mix(in_oklab,currentColor_18%,var(--bg))] hover:bg-[color-mix(in_oklab,currentColor_26%,var(--bg))]"
+      : /* ghost */
+        "bg-transparent";
+
+const colorCls = `${toneMap[tone] ?? toneMap.muted} ${hoverMap[hoverTone] ?? hoverMap.accent}`;
+
+const cls = [base, variantCls, colorCls, classFromProps]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<a
+  href={href}
+  aria-label={label}
+  title={title}
+  class={cls}
+  target={safeTarget}
+  rel={safeRel}
+>
+  <slot />
+</a>

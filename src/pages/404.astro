@@ -1,0 +1,156 @@
+---
+import Shell from "../layouts/Shell.astro";
+import Button from "../components/ui/Button.astro";
+import Text from "../components/ui/Text.astro";
+
+const suggestions = [
+  { href: "/", label: "Home" },
+  { href: "/projects", label: "Browse Projects" },
+  { href: "/now", label: "What I'm Doing Now" },
+  { href: "/about", label: "About" },
+];
+---
+
+<Shell title="404 — Lost in the Atlas" description="This page doesn't exist. Let's get you back on the map.">
+  <section
+    class="relative overflow-hidden"
+    aria-labelledby="lost-heading"
+  >
+    <!-- Subtle grid glow background -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse at center,black 40%,transparent 80%)]"
+    >
+      <div class="absolute inset-0 opacity-[0.08] -z-10"
+           style="background-image:
+             linear-gradient(to right, var(--fg)/12 1px, transparent 1px),
+             linear-gradient(to bottom, var(--fg)/12 1px, transparent 1px);
+             background-size: 36px 36px;">
+      </div>
+      <div class="absolute -inset-32 blur-3xl opacity-30 [background:conic-gradient(from_120deg_at_50%_50%,_var(--accent)_0%,_transparent_25%,_var(--fg)/20_50%,_transparent_75%,_var(--accent)/40_100%)]"></div>
+    </div>
+
+    <div class="container grid min-h-[calc(100vh-var(--header-height)-var(--footer-height))] place-items-center py-16">
+      <div class="max-w-2xl text-center space-y-6">
+        <!-- Glitch headline -->
+        <div class="relative inline-block select-none">
+          <h1 id="lost-heading"
+              class="text-[clamp(96px,14vw,160px)] font-black leading-none tracking-tight text-[var(--fg)]
+                     relative mx-auto glitch"
+              data-text="404">
+            404
+          </h1>
+          <span class="sr-only">Page not found</span>
+        </div>
+
+        <Text as="h2" variant="h3" weight="semibold">
+          Lost in the Atlas
+        </Text>
+
+        <Text tone="muted">
+          The path <code id="missing-path" class="px-1 py-0.5 rounded bg-[var(--surface-1)] [border:1px_solid_var(--border)]"></code> didn’t map to anything.
+          It might have moved, never existed, or slipped into a parallel build.
+        </Text>
+
+        <!-- Quick actions -->
+        <div class="flex flex-wrap items-center justify-center gap-3 pt-4">
+          <Button as="a" href="/" variant="primary">Go Home</Button>
+          <Button as="a" href="/projects" variant="ghost">Browse Projects</Button>
+          <Button as="a" href="/now" variant="ghost">See What I'm Doing</Button>
+          <Button as="a" href="/about" variant="outline">About Me</Button>
+        </div>
+
+        <!-- Search -->
+        <form action="/search" method="get" class="mx-auto max-w-md pt-4">
+          <label for="q" class="sr-only">Search the site</label>
+          <div class="flex items-stretch gap-2">
+            <input
+              id="q"
+              name="q"
+              type="search"
+              placeholder="Search projects, posts, components…"
+              class="w-full rounded-lg px-3 py-2 bg-[var(--surface-1)] text-[var(--fg)]
+                     [border:1px_solid_var(--border)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+              autocomplete="off"
+            />
+            <Button as="button" type="submit" variant="primary">Search</Button>
+          </div>
+          <p class="mt-2 text-sm text-[var(--muted-fg)]">Tip: press <kbd class="px-1 border rounded">/</kbd> to focus search.</p>
+        </form>
+
+        <!-- Helpful links list -->
+        <div class="pt-6">
+          <ul class="inline-grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
+            {suggestions.map((s) => (
+              <li class="group">
+                <a href={s.href}
+                   class="flex items-center justify-between gap-3 rounded-lg px-3 py-2
+                          bg-[var(--surface-1)] [border:1px_solid_var(--border)]
+                          hover:[border-color:var(--accent)] hover:text-[var(--accent)] transition-colors">
+                  <span>{s.label}</span>
+                  <svg class="w-4 h-4 opacity-70 group-hover:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- “Report issue” CTA if you want it -->
+        <div class="pt-2 text-sm text-[var(--muted-fg)]">
+          Think this page should exist? <a class="underline hover:text-[var(--accent)]" href="https://github.com/danielphilipjohnson/danielphilipjohnson/issues/new">Open an issue</a>.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Glitch effect (subtle, respects motion prefs) */
+    @keyframes glitch {
+      0%   { clip-path: inset(0 0 0 0); transform: translate(0,0); }
+      1%   { clip-path: inset(10% 0 85% 0); transform: translate(1px,-1px); }
+      2%   { clip-path: inset(80% 0 5% 0); transform: translate(-1px,1px); }
+      3%   { clip-path: inset(0 0 0 0); transform: translate(0,0); }
+      100% { clip-path: inset(0 0 0 0); }
+    }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .glitch::before {
+      color: color-mix(in oklab, var(--accent) 70%, transparent);
+      transform: translate(-2px, 0);
+      clip-path: inset(0 0 0 0);
+      animation: glitch 2s infinite steps(12) alternate;
+      opacity: .7;
+    }
+    .glitch::after {
+      color: color-mix(in oklab, var(--fg) 50%, transparent);
+      transform: translate(2px, 0);
+      clip-path: inset(0 0 0 0);
+      animation: glitch 2.1s infinite steps(12) alternate-reverse;
+      opacity: .4;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .glitch::before, .glitch::after { animation: none; transform: none; }
+    }
+  </style>
+
+  <script is:inline>
+    // Fill the missing path and focus search on '/'
+    const pathEl = document.getElementById('missing-path');
+    if (pathEl) pathEl.textContent = location.pathname || '/';
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && !/input|textarea|select/i.test(document.activeElement.tagName)) {
+        e.preventDefault();
+        const q = document.getElementById('q');
+        q?.focus();
+      }
+    });
+  </script>
+</Shell>

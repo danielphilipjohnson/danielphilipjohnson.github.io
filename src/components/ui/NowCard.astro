@@ -1,0 +1,28 @@
+---
+import Badge from "./Badge.astro";
+const {
+  title,
+  status = "wip",
+  nextMilestone = "",
+  eta = "",
+  note = "",
+} = Astro.props;
+const tone =
+  status === "live" ? "success" : status === "paused" ? "danger" : "warn";
+---
+
+<article
+  class="grid gap-2 rounded-xl border p-4 bg-[var(--surface-1)] [border-color:var(--card-border)]"
+>
+  <header class="flex items-center justify-between gap-3">
+    <h3 class="text-[var(--fs-0)] font-semibold">{title}</h3>
+    <Badge tone={tone}>{status}</Badge>
+  </header>
+  {note && <p class="text-[var(--muted)]">{note}</p>}
+  <div
+    class="flex flex-wrap items-center gap-3 text-[var(--fs--1)] text-[var(--muted)]"
+  >
+    {nextMilestone && <span>🎯 {nextMilestone}</span>}
+    {eta && <span>⏳ {eta}</span>}
+  </div>
+</article>

@@ -1,0 +1,63 @@
+---
+import Shell from "../layouts/Shell.astro";
+import Button from "../components/ui/Button.astro";
+import Text from "../components/ui/Text.astro";
+export const prerender = true; // this page itself can be static
+const q = (Astro.url.searchParams.get("q") ?? "").trim(); // ok at build, we’ll also read it on client
+---
+
+<Shell title="Search" description="Find projects and posts.">
+  <section class="container py-10">
+    <form action="/search" method="get" class="max-w-2xl mb-8 flex gap-2">
+      <label class="sr-only" for="q">Search</label>
+      <input id="q" name="q" type="search" value={q} placeholder="Search…"
+        class="w-full rounded-lg px-3 py-2 bg-[var(--surface-1)] text-[var(--fg)]
+               [border:1px_solid_var(--border)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]" />
+      <Button as="button" type="submit" variant="primary">Search</Button>
+    </form>
+
+    <Text as="h1" variant="h3" weight="semibold" class="mb-4">
+      {q ? `Results for "${q}"` : "Search"}
+    </Text>
+
+    <ul id="results" class="mt-4 grid gap-3"></ul>
+
+    <p id="empty" class="text-[var(--muted-fg)]"></p>
+  </section>
+
+  <script is:inline>
+    const params = new URLSearchParams(location.search);
+    const q = (params.get('q') || '').trim().toLowerCase();
+    const results = document.getElementById('results');
+    const empty = document.getElementById('empty');
+
+    async function run() {
+      const res = await fetch('/search-index.json');
+      const all = await res.json(); // [{url,title,description,text}]
+      const matches = q ? all.filter(item => item.text.includes(q)) : [];
+
+      results.innerHTML = '';
+      if (!q) {
+        empty.textContent = 'Type a query above to search the site.';
+        return;
+      }
+      if (matches.length === 0) {
+        empty.innerHTML = 'No results. Try different keywords or browse the <a class="underline hover:text-[var(--accent)]" href="/projects">Projects</a>.';
+        return;
+      }
+      empty.textContent = '';
+
+      for (const m of matches) {
+        const li = document.createElement('li');
+        li.className = 'rounded-lg p-4 bg-[var(--surface-1)] [border:1px_solid_var(--border)] hover:[border-color:var(--accent)] transition-colors';
+        li.innerHTML = `
+          <a href="${m.url}" class="block space-y-1">
+            <h3 class="font-semibold">${m.title}</h3>
+            <p class="text-sm text-[var(--muted-fg)]">${m.description ?? m.text.slice(0,120)}…</p>
+          </a>`;
+        results.appendChild(li);
+      }
+    }
+    run();
+  </script>
+</Shell>

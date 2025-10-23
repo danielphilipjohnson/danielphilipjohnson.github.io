@@ -1,0 +1,17 @@
+---
+import Layout from "../layouts/Shell.astro";
+import TechStack from "../components/tech/TechStack.astro";
+---
+
+<Layout
+  title="Tech Stack — Daniel Johnson"
+  description="My current languages, frameworks, and tools."
+>
+  <section class="grid gap-2">
+    <h1 class="text-[length:var(--fs-2)] font-semibold">Tech Stack</h1>
+    <p class="text-[var(--muted)]">
+      The tools I use most across frontend, backend, and infra.
+    </p>
+  </section>
+  <TechStack />
+</Layout>

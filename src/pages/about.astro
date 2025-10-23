@@ -1,0 +1,158 @@
+---
+import Layout from "../layouts/Shell.astro";
+import Text from "../components/ui/Text.astro";
+import Badge from "../components/ui/Badge.astro";
+import LinkList from "../components/ui/LinkList.astro";
+import ImageCard from "../components/ui/ImageCard.astro";
+import TechStack from "../components/tech/TechStack.astro";
+
+const person = {
+  name: "Daniel Philip Johnson",
+  headline: "Full-Stack Engineer • Design Systems • Developer Experience",
+  location: "Cornwall, UK",
+  avatar: "https://danielphilipjohnson.com/images/about/me.jpg",
+  site: "https://danielphilipjohnson.com",
+  email: "mailto:hello..danielphilipjohnson.com",
+  socials: [
+    { href: "https://github.com/danielphilipjohnson", label: "GitHub" },
+    { href: "https://twitter.com/danielp_johnson", label: "Twitter" },
+    { href: "https://www.linkedin.com/in/daniel-philip-johnson/", label: "LinkedIn" },
+    { href: "https://codepen.io/danielphilipjohnson/", label: "CodePen" },
+  ],
+};
+
+const highlights = [
+  "Design system architecture in fintech (scalable tokens, a11y-first)",
+  "Shipping fast Astro/React frontends with zero-JS defaults",
+  "DX: CI/CD, GitHub Actions, perf & bundle discipline",
+];
+
+const timeline = [
+  { when: "Now",      title: "Senior Frontend Engineer .. Loan.co.uk", detail: "Design systems, infra-ready UI, DX" },
+  { when: "2023–24",  title: "E-commerce & agency work", detail: "Performance, migration, component libraries" },
+  { when: "2019–22",  title: "Startups → open source", detail: "Vue/Nuxt, backend APIs, growth experiments" },
+];
+
+const writing = [
+  { href: "/blog", label: "All posts" },
+  { href: "https://dev.to/danielphilipjohnson", label: "Dev.to" },
+  { href: "https://danielphilipjohnson.hashnode.dev/", label: "Hashnode" },
+];
+
+const contactIssueUrl =
+  "https://github.com/yourname/project-atlas/issues/new?title=" +
+  encodeURIComponent("Contact: ") +
+  "&labels=" + encodeURIComponent("contact") +
+  "&body=" + encodeURIComponent("**Name:** \n**Email:** \n\n**Message:** \n");
+
+// JSON-LD Person
+const jsonLd = {
+  "..context": "https://schema.org",
+  "..type": "Person",
+  name: person.name,
+  description: person.headline,
+  url: person.site,
+  email: person.email,
+  image: new URL(person.avatar, Astro.site ?? "https://danielphilipjohnson.com/").toString(),
+  sameAs: person.socials.map(s => s.href),
+  homeLocation: { "..type": "Place", name: person.location },
+  knowsAbout: [
+    "TypeScript","React","Next.js","Nuxt.js","Astro","Tailwind CSS",
+    "Node.js","GraphQL","NestJS","PHP","Go","PostgreSQL","MongoDB","Redis",
+    "Docker","GitHub Actions","Cloudflare","Design Systems","Accessibility"
+  ],
+};
+---
+
+<Layout title="About — Daniel Philip Johnson" description={person.headline}>
+  <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+
+  <!-- Hero -->
+  <section class="container grid gap-6 md:grid-cols-[1fr_.9fr] items-center">
+    <div class="grid gap-3">
+      <Text as="h1" variant="hero" weight="light">{person.name}</Text>
+      <Text tone="muted">{person.headline}</Text>
+      <div class="flex flex-wrap gap-2">
+        <Badge tone="moss" variant="outline" pill>{person.location}</Badge>
+        <Badge tone="clay" variant="outline" pill>Design Systems</Badge>
+        <Badge tone="water" variant="outline" pill>DX & Performance</Badge>
+      </div>
+
+      <div class="mt-2">
+        <LinkList
+          items={[
+            { href: "/projects", label: "Projects" },
+            { href: "/now", label: "Now" },
+            { href: person.site, label: "Main site" },
+          ]}
+          direction="horizontal"
+          size="md"
+          gap="tight"
+        />
+      </div>
+    </div>
+
+    <div class="max-w-md md:justify-self-end">
+      <ImageCard
+        src={person.avatar}
+        alt={person.name}
+        caption="Always shipping pixels with purpose."
+        width="412"
+        height="231"
+      />
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  <section class="container grid gap-3">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Highlights</h2>
+    <ul class="grid gap-2">
+      {highlights.map(h => (
+        <li class="flex items-start gap-2">
+          <span class="mt-1 inline-block size-1.5 rounded-full bg-[var(--accent)]"></span>
+          <span>{h}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <!-- Tech Stack -->
+  <section class="container grid gap-2">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Tech Stack</h2>
+    <Text tone="muted">The tools I use most across frontend, backend, and infra.</Text>
+    <TechStack />
+  </section>
+
+  <!-- Timeline -->
+  <section class="container grid gap-3">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Timeline</h2>
+    <ol class="grid gap-3">
+      {timeline.map(t => (
+        <li class="grid gap-1 rounded-xl border p-4 bg-[var(--surface-1)] [border-color:var(--card-border)]">
+          <div class="text-[var(--muted)] text-[length:var(--fs--1)]">{t.when}</div>
+          <div class="font-medium">{t.title}</div>
+          <div class="text-[var(--muted)]">{t.detail}</div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- Writing -->
+  <section class="container grid gap-2">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Writing</h2>
+    <LinkList items={writing} direction="horizontal" size="md" gap="tight" />
+  </section>
+
+  <!-- Contact -->
+  <section class="container grid gap-3">
+    <h2 class="text-[length:var(--fs-1)] font-semibold">Get in touch</h2>
+    <div class="flex flex-wrap gap-2">
+      <a href={contactIssueUrl} class="inline-flex h-10 items-center rounded-md border px-4 [border-color:var(--border)] hover:bg-[var(--surface-1)]">
+        Contact via GitHub Issue
+      </a>
+      <a href={person.email} class="inline-flex h-10 items-center rounded-md px-4 bg-[var(--accent)] text-white">
+        Email me
+      </a>
+    </div>
+  </section>
+</Layout>

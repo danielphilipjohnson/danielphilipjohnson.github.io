@@ -1,0 +1,149 @@
+---
+import Shell from "../../layouts/Shell.astro";
+import Button from "../../components/ui/Button.astro";
+import Text from "../../components/ui/Text.astro";
+import { getCollection } from "astro:content";
+
+// Generate static paths from content collection
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content, headings } = await project.render();
+
+const data = project.data ?? {};
+const title = data.title ?? project.slug;
+const description =
+  data.description ??
+  (project.body ? String(project.body).slice(0, 160) : "Project details");
+const cover = data.cover ?? null;
+const siteUrl = data.site ?? null;
+const repoUrl = data.repo ?? null;
+const status = data.status ?? null;
+const stack = Array.isArray(data.stack) ? data.stack : [];
+const tags = Array.isArray(data.tags) ? data.tags : [];
+
+// Optional: canonical (uses site from astro.config if set)
+const canonical =
+  (Astro.site ? new URL(`/projects/${project.slug}/`, Astro.site).toString() : undefined);
+
+// JSON-LD
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: title,
+  url: canonical ?? `/projects/${project.slug}/`,
+  codeRepository: repoUrl || undefined,
+  applicationCategory: "WebApplication",
+  programmingLanguage: stack.join(", ") || undefined,
+  about: description,
+  thumbnailUrl: cover || undefined,
+};
+---
+
+<Shell title={title} description={description} canonical={canonical}>
+  <section class="container py-10">
+    <!-- Header -->
+    <header class="mb-8">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <Text as="h1" variant="h1" weight="bold" class="tracking-tight">{title}</Text>
+          {status && (
+            <span class="inline-flex mt-2 items-center rounded-full px-2.5 py-0.5 text-xs
+                          [border:1px_solid_var(--border)] bg-[var(--surface-1)] text-[var(--muted-fg)]">
+              <span class="mr-1 inline-block h-2 w-2 rounded-full bg-[var(--accent)]"></span>
+              {status}
+            </span>
+          )}
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          {siteUrl && <Button as="a" href={siteUrl} variant="primary" target="_blank" rel="noopener">View Site</Button>}
+          {repoUrl && <Button as="a" href={repoUrl} variant="outline" target="_blank" rel="noopener">View Repo</Button>}
+          <Button as="a" href="/projects" variant="ghost">All Projects</Button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Cover -->
+    {cover && (
+      <figure class="mb-8 overflow-hidden rounded-xl [border:1px_solid_var(--border)] bg-[var(--surface-1)]">
+        <img
+          src={cover}
+          alt={`${title} cover`}
+          class="w-full h-auto object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      </figure>
+    )}
+
+    <!-- Meta grid -->
+    {(stack.length || tags.length) && (
+      <div class="mb-10 grid gap-4 sm:grid-cols-2">
+        {stack.length > 0 && (
+          <div class="rounded-xl p-4 bg-[var(--surface-1)] [border:1px_solid_var(--border)]">
+            <h3 class="mb-2 text-sm font-semibold text-[var(--muted-fg)]">Stack</h3>
+            <div class="flex flex-wrap gap-2">
+              {stack.map((s) => (
+                <span class="rounded-full px-2.5 py-1 text-xs [border:1px_solid_var(--border)] bg-[var(--bg)]">
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {tags.length > 0 && (
+          <div class="rounded-xl p-4 bg-[var(--surface-1)] [border:1px_solid_var(--border)]">
+            <h3 class="mb-2 text-sm font-semibold text-[var(--muted-fg)]">Tags</h3>
+            <div class="flex flex-wrap gap-2">
+              {tags.map((t) => (
+                <a
+                  href={`/projects?tag=${encodeURIComponent(t)}`}
+                  class="rounded-full px-2.5 py-1 text-xs [border:1px_solid_var(--border)] bg-[var(--bg)]
+                         hover:[border-color:var(--accent)] hover:text-[var(--accent)] transition-colors"
+                >
+                  #{t}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )}
+
+    <!-- Body -->
+    <article class="prose prose-invert max-w-none
+                    prose-headings:scroll-mt-24 prose-img:rounded-lg
+                    prose-hr:[border-color:var(--border)]
+                    prose-pre:bg-[var(--surface-1)] prose-code:bg-[var(--surface-1)]
+                    prose-a:text-[var(--accent)]">
+      <Content />
+    </article>
+
+    <!-- (Optional) On-page TOC if you want it later -->
+    {headings?.length > 3 && (
+      <aside class="mt-10 rounded-xl p-4 bg-[var(--surface-1)] [border:1px_solid_var(--border)]">
+        <h3 class="mb-2 text-sm font-semibold text-[var(--muted-fg)]">On this page</h3>
+        <ul class="space-y-1 text-sm">
+          {headings.map((h) => (
+            <li class={`pl-${(h.depth - 2) * 3}`}>
+              <a href={`#${h.slug}`} class="hover:text-[var(--accent)]">{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+  </section>
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+    {JSON.stringify(jsonLd)}
+  </script>
+</Shell>

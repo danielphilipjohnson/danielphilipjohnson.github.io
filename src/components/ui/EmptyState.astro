@@ -1,0 +1,25 @@
+---
+const {
+  title = "Nothing here (yet)",
+  desc = "Try removing filters or check back soon.",
+  actionHref = "",
+  actionLabel = "",
+} = Astro.props;
+---
+
+<div
+  class="grid place-items-center rounded-xl border p-8 text-center bg-[var(--surface-1)] [border-color:var(--card-border)]"
+>
+  <h3 class="text-[var(--fs-1)] font-semibold mb-1">{title}</h3>
+  <p class="text-[var(--muted)]">{desc}</p>
+  {
+    actionHref && (
+      <a
+        href={actionHref}
+        class="mt-4 inline-flex h-10 items-center rounded-md px-4 border [border-color:var(--border)]"
+      >
+        Reset
+      </a>
+    )
+  }
+</div>
