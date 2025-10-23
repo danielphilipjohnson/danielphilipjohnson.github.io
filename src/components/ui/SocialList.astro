@@ -1,0 +1,31 @@
+---
+/**
+ * SocialList
+ *
+ * Props:
+ *  - gap?: 'tight'|'normal'|'loose' (default 'normal')
+ *  - align?: 'start'|'center'|'end' (default 'start')
+ *  - wrap?: boolean (default false)
+ *
+ * Slot:
+ *  - default: <SocialLink>…</SocialLink> items
+ */
+const {
+  gap = "normal",
+  align = "start",
+  wrap = false,
+  class: classFromProps = "",
+} = Astro.props;
+
+const gapCls = gap === "tight" ? "gap-2" : gap === "loose" ? "gap-5" : "gap-4";
+
+const alignCls =
+  align === "center" ? "justify-center" : align === "end" ? "justify-end" : "";
+
+const wrapCls = wrap ? "flex-wrap" : "flex-nowrap";
+const cls = ["flex", gapCls, alignCls, wrapCls, classFromProps]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={cls}><slot /></div>

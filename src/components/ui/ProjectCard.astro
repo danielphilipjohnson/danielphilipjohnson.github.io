@@ -1,0 +1,115 @@
+---
+/**
+ * ProjectCard (composite, zero-JS)
+ *
+ * Props:
+ *  - title: string
+ *  - status: 'live' | 'wip' | 'paused'
+ *  - stack: string[]
+ *  - cover?: string
+ *  - alt?: string
+ *  - site?: string
+ *  - repo?: string
+ *  - metrics?: { stars?: number; pushedAt?: string }
+ *  - highlight?: boolean
+ *
+ * Slots:
+ *  - default: description/summary (MDX/HTML)
+ */
+import { Image } from 'astro:assets';
+import Badge from "./Badge.astro";
+import Button from "./Button.astro";
+import Card from "./Card.astro";
+import RepoStat from "./RepoStat.astro";
+
+const {
+  title,
+  status,
+  stack = [],
+  cover,
+  alt = title,
+  site,
+  repo,
+  metrics = {},
+  highlight = false,
+  class: clsFromProps = "",
+} = Astro.props;
+
+const statusTone =
+  status === "live" ? "success" : status === "wip" ? "warn" : "danger";
+const tagCls =
+  "rounded-md border px-2 py-1 text-[var(--fs--1)] [border-color:var(--card-border)]";
+---
+
+<Card
+  class={[
+    "h-full",
+    highlight
+      ? "outline outline-2 outline-[color:var(--accent)] -outline-offset-1"
+      : "",
+    clsFromProps,
+  ].join(" ")}
+>
+  {
+    cover && (
+      <div
+        slot="media"
+        class="overflow-hidden rounded-lg border [border-color:var(--card-border)] aspect-[16/9] bg-[var(--surface-1)]"
+      >
+        <Image
+          src={cover}
+          alt={alt}
+          width="1000"
+          height="562"
+          class="h-full w-full object-cover"
+        />
+      </div>
+    )
+  }
+
+  <header slot="header" class="flex items-start justify-between gap-3">
+    <h3 class="text-[var(--fs-1)] font-semibold leading-tight">{title}</h3>
+    <Badge tone={statusTone}>{status}</Badge>
+  </header>
+
+  <div class="text-[color:var(--muted)]">
+    <slot />
+  </div>
+
+  {
+    stack.length > 0 && (
+      <ul class="mt-2 flex flex-wrap gap-2">
+        {stack.map((s) => (
+          <li class={tagCls}>{s}</li>
+        ))}
+      </ul>
+    )
+  }
+
+  <footer
+    slot="footer"
+    class="mt-3 flex flex-wrap items-center justify-between gap-3"
+  >
+    <div class="flex gap-2">
+      {
+        site && (
+          <Button as="a" href={site} variant="ghost">
+            Live
+          </Button>
+        )
+      }
+      {
+        repo && (
+          <Button as="a" href={repo} variant="primary">
+            Repo
+          </Button>
+        )
+      }
+    </div>
+    {
+      (metrics.stars ?? 0) > 0 && (
+        <RepoStat stars={metrics.stars} pushedAt={metrics.pushedAt} />
+      )
+    }
+  </footer>
+</Card>

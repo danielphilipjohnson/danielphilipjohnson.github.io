@@ -1,0 +1,193 @@
+/* Your palette exactly as provided */
+@layer theme {
+  :root {
+    /* Stone */
+    --color-stone-50: #f8f8f7;
+    --color-stone-100: #f0efed;
+    --color-stone-200: #e2e0db;
+    --color-stone-300: #d0ccc4;
+    --color-stone-400: #b3aea3;
+    --color-stone-500: #9a9487;
+    --color-stone-600: #82796b;
+    --color-stone-700: #6a6257;
+    --color-stone-800: #554e46;
+    --color-stone-900: #48413b;
+    --color-stone-950: #272320;
+
+    /* Moss */
+    --color-moss-50: #f4f7f4;
+    --color-moss-100: #e6ede5;
+    --color-moss-200: #cfdccc;
+    --color-moss-300: #adc2aa;
+    --color-moss-400: #87a484;
+    --color-moss-500: #698a65;
+    --color-moss-600: #526f50;
+    --color-moss-700: #405741;
+    --color-moss-800: #354737;
+    --color-moss-900: #2d3c2f;
+    --color-moss-950: #151e17;
+
+    /* Bamboo */
+    --color-bamboo-50: #f7f9e8;
+    --color-bamboo-100: #eef3d0;
+    --color-bamboo-200: #dfe6a7;
+    --color-bamboo-300: #c6d272;
+    --color-bamboo-400: #abb84a;
+    --color-bamboo-500: #8b9932;
+    --color-bamboo-600: #6d7929;
+    --color-bamboo-700: #525c22;
+    --color-bamboo-800: #434c1f;
+    --color-bamboo-900: #3b421d;
+    --color-bamboo-950: #1f240e;
+
+    /* Clay */
+    --color-clay-50: #faf5f2;
+    --color-clay-100: #f3e9e3;
+    --color-clay-200: #e7d3c9;
+    --color-clay-300: #d8b6a6;
+    --color-clay-400: #c5957e;
+    --color-clay-500: #b17b61;
+    --color-clay-600: #a06751;
+    --color-clay-700: #845444;
+    --color-clay-800: #6e483c;
+    --color-clay-900: #5c3e35;
+    --color-clay-950: #301f1a;
+
+    /* Water */
+    --color-water-50: #f2f7fa;
+    --color-water-100: #e5eff4;
+    --color-water-200: #c8dfe9;
+    --color-water-300: #9ac6d8;
+    --color-water-400: #64a5c3;
+    --color-water-500: #4189af;
+    --color-water-600: #3a7093;
+    --color-water-700: #345b77;
+    --color-water-800: #2f4d63;
+    --color-water-900: #2b4255;
+    --color-water-950: #192736;
+
+    /* Blossom */
+    --color-blossom-50: #fcf5f7;
+    --color-blossom-100: #f9eaef;
+    --color-blossom-200: #f4d5df;
+    --color-blossom-300: #ecb4c6;
+    --color-blossom-400: #e289a6;
+    --color-blossom-500: #d66285;
+    --color-blossom-600: #c24169;
+    --color-blossom-700: #a33155;
+    --color-blossom-800: #872c49;
+    --color-blossom-900: #712a42;
+    --color-blossom-950: #3f121f;
+
+    /* Ink */
+    --color-ink-50: #f6f6f9;
+    --color-ink-100: #ececf2;
+    --color-ink-200: #d6d7e3;
+    --color-ink-300: #b3b6cd;
+    --color-ink-400: #888db3;
+    --color-ink-500: #6b709e;
+    --color-ink-600: #565a85;
+    --color-ink-700: #474a6d;
+    --color-ink-800: #3c3f5b;
+    --color-ink-900: #35374d;
+    --color-ink-950: #23232f;
+
+    /* Paper */
+    --color-paper-50: #fcfaf6;
+    --color-paper-100: #f7f2e9;
+    --color-paper-200: #efe4d3;
+    --color-paper-300: #e3ceb1;
+    --color-paper-400: #d4b48e;
+    --color-paper-500: #c79c73;
+    --color-paper-600: #b88059;
+    --color-paper-700: #9b674b;
+    --color-paper-800: #7f5441;
+    --color-paper-900: #684739;
+    --color-paper-950: #37241d;
+
+    /* Status */
+    --color-success-500: #3a9968;
+    --color-warning-500: #e0aa0f;
+    --color-danger-500: #ea4c47;
+  }
+}
+
+/* Semantic aliases (light) */
+:root {
+  --bg: var(--color-stone-50);
+  --fg: var(--color-stone-900);
+  --muted: var(--color-stone-600);
+  --border: var(--color-stone-200);
+
+  /* Accent: keep “zen moss” */
+  --accent: var(--color-moss-600);
+  --accent-contrast: white;
+
+  /* Surfaces */
+  --surface-1: var(--color-stone-50);
+  --surface-2: var(--color-stone-100);
+  --card-bg: var(--surface-2);
+  --card-fg: var(--fg);
+  --card-border: var(--border);
+
+  /* Status */
+  --status-success: var(--color-success-500);
+  --status-warn: var(--color-warning-500);
+  --status-danger: var(--color-danger-500);
+
+  --badge-soft-mix: 18%;
+  --badge-border-mix: 42%;
+
+  /* Typography & rhythm */
+  --font-sans:
+    ui-sans-serif, system-ui, Inter, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans";
+  --fs--1: 0.9rem;
+  --fs-0: 1rem;
+  --fs-1: 1.25rem;
+  --fs-2: 1.5rem;
+  --fs-3: 3.875rem;
+  --lh-body: 1.55;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+
+  /* Space/Radius/Shadow/Timings */
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-6: 1.5rem;
+  --sp-8: 2rem;
+  --radius-2: 0.75rem;
+  --shadow-1: 0 1px 2px hsl(0 0% 0%/0.06), 0 6px 20px hsl(0 0% 0%/0.06);
+  --dur-1: 120ms;
+  --dur-2: 200ms;
+  --ease-out: cubic-bezier(0.17, 0.67, 0.27, 0.99);
+}
+
+/* Semantic aliases (dark) */
+:root[data-theme="dark"] {
+  --bg: var(--color-ink-950);
+  --fg: var(--color-stone-100);
+  --muted: var(--color-stone-400);
+  --border: var(--color-ink-800);
+
+  --accent: var(--color-moss-500);
+  --accent-contrast: #fff;
+
+  --surface-1: var(--color-ink-900);
+  --surface-2: var(--color-ink-800);
+  --card-bg: var(--surface-2);
+  --card-fg: var(--fg);
+  --card-border: var(--border);
+
+  /* badge */
+  --badge-soft-mix: 32%;
+  --badge-border-mix: 55%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-1: 0ms;
+    --dur-2: 0ms;
+  }
+}

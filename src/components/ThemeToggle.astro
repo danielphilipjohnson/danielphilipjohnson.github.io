@@ -1,0 +1,44 @@
+---
+const label = "Toggle theme";
+---
+
+<button
+  id="theme-toggle"
+  class="inline-flex items-center gap-2 rounded-md border px-3 h-9 text-sm
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]
+         focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]
+         [border-color:var(--border)] bg-[var(--surface-1)]"
+  type="button"
+  aria-pressed="false"
+  title={label}
+>
+  <span class="i">🌙</span>
+  <span>Theme</span>
+</button>
+
+<script is:inline>
+  // same logic you posted, with aria + icon updates
+  (function () {
+    const btn = document.getElementById("theme-toggle");
+    if (!btn) return;
+
+    function set(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      try {
+        localStorage.setItem("atlas-theme", theme);
+      } catch {}
+      const dark = theme === "dark";
+      btn.setAttribute("aria-pressed", String(dark));
+      btn.querySelector(".i").textContent = dark ? "☀️" : "🌙";
+    }
+
+    btn.addEventListener("click", () => {
+      const cur =
+        document.documentElement.getAttribute("data-theme") || "light";
+      set(cur === "dark" ? "light" : "dark");
+    });
+
+    // sync initial state (in case bootstrap set it)
+    set(document.documentElement.getAttribute("data-theme") || "light");
+  })();
+</script>

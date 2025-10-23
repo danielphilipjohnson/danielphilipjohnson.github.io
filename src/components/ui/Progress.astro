@@ -1,0 +1,15 @@
+---
+/** Props: value 0–100 */
+const { value = 0, label = "", class: cls = "" } = Astro.props;
+const v = Math.max(0, Math.min(100, Number(value)));
+---
+
+<div class={["grid gap-1", cls].join(" ")}>
+  {label && <div class="text-[var(--fs--1)] text-[var(--muted)]">{label}</div>}
+  <div
+    class="h-2 rounded-full bg-[color-mix(in_oklab,var(--fg),transparent_92%)] overflow-hidden"
+  >
+    <div class="h-full rounded-full bg-[var(--accent)]" style={`width:${v}%`}>
+    </div>
+  </div>
+</div>

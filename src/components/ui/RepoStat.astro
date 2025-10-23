@@ -1,0 +1,41 @@
+---
+/**
+ * RepoStat
+ * Props:
+ *  - stars?: number
+ *  - pushedAt?: string (ISO)
+ *  - compact?: boolean (default false)
+ */
+const { stars = 0, pushedAt, compact = false, class: cls = "" } = Astro.props;
+
+const date = pushedAt ? new Date(pushedAt) : null;
+const formatted = date
+  ? new Intl.DateTimeFormat("en-GB", {
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    }).format(date)
+  : null;
+---
+
+<span
+  class={[
+    "inline-flex items-center gap-2 text-[var(--fs--1)] text-[var(--muted)]",
+    cls,
+  ].join(" ")}
+>
+  <span class="inline-flex items-center gap-1">
+    <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"
+      ><path
+        fill="currentColor"
+        d="M12 17.3 6.2 21l1.6-6.8L2 9.3l6.9-.6L12 2l3.1 6.7 6.9.6-5.8 4.9L17.8 21z"
+      ></path></svg
+    >
+    {stars}
+  </span>
+  {
+    !compact && formatted && (
+      <span aria-label={`Last push ${formatted}`}>· Last push {formatted}</span>
+    )
+  }
+</span>

@@ -1,0 +1,18 @@
+---
+import Badge from "../../components/ui/Badge.astro";
+const { name, href = "", tone = "muted" } = Astro.props;
+---
+
+{
+  href ? (
+    <a href={href} target="_blank" rel="noopener noreferrer">
+      <Badge tone={tone} variant="outline" pill>
+        {name}
+      </Badge>
+    </a>
+  ) : (
+    <Badge tone={tone} variant="outline" pill>
+      {name}
+    </Badge>
+  )
+}

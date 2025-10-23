@@ -1,0 +1,112 @@
+---
+import Layout from "../layouts/Shell.astro";
+import Hero from "../components/site/Hero.astro";
+import NowTicker from "../components/ui/NowTicker.astro";
+import ProjectCard from "../components/ui/ProjectCard.astro";
+import { getCollection } from "astro:content";
+
+let metrics: Record<string, { stars?: number; pushedAt?: string }> = {};
+try {
+  metrics = (await import("../data/repos.json")).default;
+} catch {}
+
+// Load content
+const all = await getCollection("projects");
+
+// Featured = highlight true (fallback: first 3 by order)
+const featured = all
+  .filter((p) => p.data.highlight)
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+  .slice(0, 3);
+
+const fallback = featured.length
+  ? []
+  : all
+      .slice()
+      .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999))
+      .slice(0, 3);
+
+// WIP ticker: titles of wip items with next action derived from body (simple)
+const wips = all.filter((p) => p.data.status === "wip");
+const tickerItems = wips.map((p) => `🛠 ${p.data.title}`);
+
+// Small helper to summarize
+const strip = (s: string) =>
+  (s ?? "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/[#>*_~\-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+const summaries = Object.fromEntries(
+  all.map((e) => [e.id, strip(e.body ?? "")]),
+);
+---
+
+<Layout
+  title="Project Atlas"
+  description="A fast Astro hub for projects & WIP."
+>
+  <Hero />
+
+  <NowTicker items={tickerItems} />
+
+  <!-- Featured projects -->
+  <section class="container grid gap-4 py-10">
+    <header class="flex items-end justify-between">
+      <h2 class="text-[var(--fs-1)] font-semibold">Featured</h2>
+      <a
+        href="/projects"
+        class="inline-flex items-center gap-2 text-[var(--accent)] hover:underline"
+        >All projects →</a
+      >
+    </header>
+
+    <div
+      class="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]"
+    >
+      {
+        (featured.length ? featured : fallback).map((p) => (
+          <ProjectCard
+            title={p.data.title}
+            status={p.data.status}
+            stack={p.data.stack}
+            cover={p.data.cover}
+            alt={p.data.title}
+            site={p.data.site}
+            repo={p.data.repo}
+            metrics={p.data.repo ? (metrics[p.data.repo] ?? {}) : {}}
+            highlight={true}
+          >
+            {summaries[p.id] ?? ""}
+          </ProjectCard>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Light divider -->
+  <div class="h-px w-full bg-[var(--border)]/80"></div>
+
+  <!-- Quick CTA row -->
+  <section class="container grid gap-4 py-8">
+    <div class="grid items-center gap-4 md:grid-cols-2">
+      <div>
+        <h3 class="text-[var(--fs-1)] font-semibold">What I’m building now</h3>
+        <p class="text-[var(--muted)]">
+          A living /now page with milestones and ETAs.
+        </p>
+      </div>
+      <div class="md:justify-self-end">
+        <a
+          href="/now"
+          class="inline-flex h-10 items-center rounded-md border px-4 [border-color:var(--border)] hover:bg-[var(--surface-1)]"
+          >Open /now</a
+        >
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,47 @@
+---
+/**
+ * Props:
+ * - when: string (e.g. "Thu")
+ * - title: string
+ * - detail?: string
+ * - href?: string
+ * - tag?: string  (e.g. "commit", "deploy", "note")
+ */
+const { when, title, detail = "", href = "", tag = "" } = Astro.props;
+const color =
+  tag === "deploy"
+    ? "var(--status-success)"
+    : tag === "commit"
+      ? "var(--accent)"
+      : tag === "note"
+        ? "var(--muted)"
+        : "var(--border)";
+---
+
+<li class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 items-start">
+  <span
+    class="mt-1 inline-block size-2 rounded-full"
+    style={`background:${color}`}></span>
+  <div>
+    <div class="flex flex-wrap items-baseline gap-2">
+      <span class="text-[var(--fs--2)] text-[var(--muted)]">{when}</span>
+      {
+        href ? (
+          <a
+            href={href}
+            class="underline underline-offset-2 decoration-[var(--accent)] hover:opacity-90"
+          >
+            {title}
+          </a>
+        ) : (
+          <span class="text-[var(--fs-0)]">{title}</span>
+        )
+      }
+    </div>
+    {
+      detail && (
+        <div class="text-[var(--fs--1)] text-[var(--muted)]">{detail}</div>
+      )
+    }
+  </div>
+</li>

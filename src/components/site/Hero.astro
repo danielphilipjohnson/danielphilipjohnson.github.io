@@ -1,0 +1,96 @@
+---
+import Button from "../ui/Button.astro";
+import Text from "../ui/Text.astro";
+---
+
+<section class="relative overflow-hidden py-20 md:py-24 bg-[var(--bg)]">
+  <div class="pointer-events-none absolute inset-0 opacity-[0.12]">
+    <div
+      class="absolute inset-0"
+      style="
+      background-image:
+        linear-gradient(to right, color-mix(in oklab, var(--fg) 10%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in oklab, var(--fg) 10%, transparent) 1px, transparent 1px);
+      background-size: 24px 24px;"
+    >
+    </div>
+    <div
+      class="absolute -top-24 -right-24 h-[48vmax] w-[48vmax] rounded-full blur-3xl"
+      style="background: color-mix(in oklab, var(--color-moss-200) 60%, transparent)"
+    >
+    </div>
+    <div
+      class="absolute -bottom-24 -left-24 h-[40vmax] w-[40vmax] rounded-full blur-3xl"
+      style="background: color-mix(in oklab, var(--color-water-200) 60%, transparent)"
+    >
+    </div>
+  </div>
+
+  <div
+    class="container relative z-10 grid items-center gap-8 md:grid-cols-[1.1fr_.9fr]"
+  >
+    <div class="space-y-5">
+      <div class="opacity-20">
+        <Text
+          as="div"
+          variant="h1"
+          weight="thin"
+          class="text-7xl md:text-9xl text-[var(--color-moss-500)]">松</Text
+        >
+      </div>
+
+      <Text as="h1" variant="h1" weight="bold" class="text-[var(--fg)]">
+        Project Atlas — a fast Astro hub for my builds.
+      </Text>
+
+      <Text variant="body" tone="muted" class="max-w-prose">
+        Auto-listed flagship projects, live WIP cards, and GitHub stars/last
+        push via Actions. Minimal, accessible, and very fast.
+      </Text>
+
+      <div class="flex flex-wrap gap-3 pt-2">
+        <Button as="a" href="/projects" variant="primary"
+          >Browse Projects</Button
+        >
+        <Button as="a" href="/now" variant="outline">Now Building</Button>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div
+        class="absolute inset-0 rotate-45 translate-x-4 translate-y-4 rounded-2xl border-2 border-dashed opacity-50 [border-color:color-mix(in_oklab,var(--border),transparent_30%)]"
+      >
+      </div>
+      <div
+        class="relative aspect-square overflow-hidden rounded-full border-4 [border-color:var(--card-border)] bg-[var(--surface-1)] shadow-md"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-tr from-[var(--surface-1)] to-transparent opacity-80"
+        >
+        </div>
+        <div
+          class="absolute inset-6 grid place-items-center rounded-full bg-[var(--bg)] shadow-inner"
+        >
+          <svg
+            class="h-20 w-20 text-[var(--color-moss-600)]"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 22s8-4 8-10V5L12 2 4 5v7c0 6 8 10 8 10Zm0-20v20M12 16s-4-3-4-6V7l4-1 4 1v3c0 3-4 6-4 6Z"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="absolute bottom-0 left-0 right-0 h-5 bg-[linear-gradient(to_right,transparent,_var(--color-moss-300),_transparent)] dark:bg-[linear-gradient(to_right,transparent,_var(--color-moss-700),_transparent)]"
+  >
+  </div>
+</section>

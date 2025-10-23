@@ -1,0 +1,72 @@
+---
+/**
+ * FilterBar (pure GET, no JS)
+ * Props:
+ *  - tags: string[]
+ *  - q?: string
+ *  - tag?: string
+ *  - placeholder?: string
+ */
+const {
+  tags = [],
+  q = "",
+  tag = "",
+  placeholder = "Search…",
+  class: cls = "",
+} = Astro.props;
+
+const hasFilters = (q?.length ?? 0) > 0 || (tag?.length ?? 0) > 0;
+---
+
+<form method="get" class={["flex flex-wrap items-center gap-2", cls].join(" ")}>
+  <label class="visually-hidden" for="q">Search</label>
+  <input
+    id="q"
+    name="q"
+    type="search"
+    value={q}
+    placeholder={placeholder}
+    class="h-10 min-w-[14rem] flex-1 rounded-md border bg-transparent px-3
+           text-[var(--fg)] placeholder:text-[color-mix(in_oklab,var(--fg),transparent_55%)]
+           [border-color:var(--border)] focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-[var(--accent)]
+           focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+  />
+
+  <label class="visually-hidden" for="tag">Tag</label>
+  <select
+    id="tag"
+    name="tag"
+    class="h-10 rounded-md border bg-transparent px-3 [border-color:var(--border)]
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]
+           focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg)]"
+    onchange="this.form.submit()"
+  >
+    <option value="" selected={tag === ""}>All tags</option>
+    {
+      tags.map((t) => (
+        <option value={t} selected={tag === t}>
+          {t}
+        </option>
+      ))
+    }
+  </select>
+
+  <noscript
+    ><button class="h-10 rounded-md border px-3 [border-color:var(--border)]"
+      >Apply</button
+    ></noscript
+  >
+
+  {
+    hasFilters && (
+      <a
+        href="?"
+        class="ml-auto inline-flex items-center h-10 px-3 rounded-md border bg-transparent
+             text-[var(--muted)] [border-color:var(--border)] hover:text-[var(--fg)]"
+      >
+        Reset
+      </a>
+    )
+  }
+</form>
