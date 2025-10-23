@@ -1,0 +1,71 @@
+---
+/**
+ * Link (token-driven, zero-JS)
+ *
+ * Props:
+ *  - href: string (required)
+ *  - size?: 'sm' | 'md' (default 'sm')
+ *  - tone?: 'default' | 'muted' | 'accent' (default 'default')
+ *  - underline?: 'hover' | 'always' | 'none' (default 'hover')
+ *  - external?: boolean (override auto-detect)
+ *  - target?, rel?, ariaCurrent?
+ *
+ * Slots:
+ *  - default: link label
+ *  - icon: optional leading icon (inline)
+ */
+const {
+  href,
+  size = "sm",
+  tone = "default",
+  underline = "hover",
+  external,
+  target,
+  rel,
+  ariaCurrent,
+} = Astro.props;
+
+if (!href) throw new Error("Link.astro: `href` is required.");
+
+const isHttp = /^https?:\/\//i.test(href);
+const isExternal =
+  typeof external === "boolean"
+    ? external
+    : isHttp && !href.startsWith(Astro.site?.origin ?? "");
+const safeRel = isExternal ? (rel ?? "noopener noreferrer") : rel;
+const safeTarget = isExternal ? (target ?? "_blank") : target;
+
+const sizeCls = size === "md" ? "text-[var(--fs-0)]" : "text-[var(--fs--1)]";
+const toneCls =
+  tone === "muted"
+    ? "text-[var(--muted)]"
+    : tone === "accent"
+      ? "text-[var(--accent)]"
+      : "text-[var(--fg)]";
+
+const underlineCls =
+  underline === "always"
+    ? "underline underline-offset-4"
+    : underline === "none"
+      ? "no-underline"
+      : "transition-colors hover:underline underline-offset-4";
+
+const base = `inline-flex items-center gap-2 ${sizeCls} ${toneCls} ${underlineCls}`;
+---
+
+<a
+  href={href}
+  class={base}
+  target={safeTarget}
+  rel={safeRel}
+  aria-current={ariaCurrent}
+>
+  {
+    Astro.slots.has("icon") && (
+      <span class="shrink-0 [&_svg]:size-4">
+        <slot name="icon" />
+      </span>
+    )
+  }
+  <slot />
+</a>

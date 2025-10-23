@@ -1,0 +1,70 @@
+---
+/**
+ * LinkList
+ *
+ * Props:
+ *  - items?: Array<{ href: string; label: string; tone?: 'default'|'muted'|'accent' }>;
+ *  - direction?: 'vertical' | 'horizontal' (default 'vertical')
+ *  - size?: 'sm' | 'md' (default 'sm')
+ *  - gap?: 'tight' | 'normal' (default 'normal')
+ *  - dividers?: boolean (default false)  // only for vertical
+ *  - underline?: 'hover' | 'always' | 'none' (pass to Link, default 'hover')
+ *
+ * Slots (optional):
+ *  - default: custom <li>…</li> content. If provided, `items` is ignored.
+ */
+import Link from "./Link.astro";
+
+const {
+  items = [],
+  direction = "vertical",
+  size = "sm",
+  gap = "normal",
+  dividers = false,
+  underline = "hover",
+  class: classFromProps = "",
+} = Astro.props;
+
+const isVertical = direction === "vertical";
+const gapCls = isVertical
+  ? gap === "tight"
+    ? "space-y-1.5"
+    : "space-y-2"
+  : gap === "tight"
+    ? "gap-3"
+    : "gap-4";
+
+const listCls = [
+  isVertical
+    ? `flex flex-col ${gapCls}`
+    : `flex flex-wrap items-center ${gapCls}`,
+  classFromProps,
+].join(" ");
+---
+
+<ul class={listCls} role="list">
+  {
+    Astro.slots.has("default") ? (
+      <slot />
+    ) : (
+      items.map((link, i) => (
+        <li
+          class={
+            dividers && isVertical && i !== 0
+              ? "pt-2 border-t [border-color:var(--border)]"
+              : ""
+          }
+        >
+          <Link
+            href={link.href}
+            size={size}
+            tone={link.tone ?? "default"}
+            underline={underline}
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))
+    )
+  }
+</ul>

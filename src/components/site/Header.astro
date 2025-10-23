@@ -1,0 +1,160 @@
+---
+import ThemeToggle from "../ThemeToggle.astro";
+import LinkList from "../ui/LinkList.astro";
+
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/now", label: "Now" },
+  { href: "/projects", label: "Projects" },
+  { href: "/about", label: "About" },
+];
+
+const here = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 border-b [border-color:var(--border)] backdrop-blur-md bg-[color-mix(in_oklab,var(--bg)_90%,transparent)]">
+  <div class="container flex items-center justify-between py-4">
+    <a href="/" class="font-semibold tracking-tight text-[var(--fg)] hover:text-[var(--accent)] transition-colors">
+      Project Atlas
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:block">
+      <LinkList
+        items={nav.map((n) => ({ ...n, tone: here === n.href ? "accent" : "default" }))}
+        direction="horizontal"
+        size="md"
+        gap="tight"
+      />
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <ThemeToggle />
+      <button
+        id="menu-toggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-drawer"
+        class="md:hidden p-2 rounded hover:bg-[var(--surface-1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors"
+      >
+        <!-- simple icon -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-layer" class="fixed inset-0 z-[9999] md:hidden pointer-events-none">
+  <div
+    id="mobile-overlay"
+    class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300"
+    aria-hidden="true"
+  ></div>
+
+  <aside
+    id="mobile-drawer"
+    class="relative h-full top-0 bottom-0 right-0 w-64 max-w-2xl bg-[var(--bg)] shadow-2xl translate-x-full transition-transform duration-300 overflow-y-auto pointer-events-auto"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="drawer-title"
+    aria-hidden="true"
+  >
+    <div class="p-6">
+      <div class="flex items-center justify-between pb-4 border-b [border-color:var(--border)]">
+        <h2 id="drawer-title" class="font-semibold text-[var(--fg)]">Menu</h2>
+        <button id="menu-close" aria-label="Close menu" class="p-2 rounded hover:bg-[var(--surface-1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <nav aria-label="Mobile">
+        <div class="mt-6 space-y-2">
+          <LinkList
+            items={nav.map((n) => ({ ...n, tone: here === n.href ? "accent" : "default" }))}
+            direction="vertical"
+            size="lg"
+            gap="loose"
+          />
+        </div>
+      </nav>
+    </div>
+  </aside>
+</div>
+
+
+<style>
+  /* Prevent any peek/flash before JS */
+  #mobile-drawer { transform: translateX(100%); }
+</style>
+
+<script is:inline>
+  const toggle   = document.getElementById('menu-toggle');
+  const closeBtn = document.getElementById('menu-close');
+  const layer    = document.getElementById('mobile-layer');
+  const drawer   = document.getElementById('mobile-drawer');
+  const overlay  = document.getElementById('mobile-overlay');
+  const main     = document.querySelector('main');
+  const prefersReduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+  function openDrawer() {
+    toggle.setAttribute('aria-expanded','true');
+    drawer.setAttribute('aria-hidden','false');
+    overlay.setAttribute('aria-hidden','false');
+
+    // Lift the whole layer above the page and allow clicks
+    layer.classList.remove('pointer-events-none');
+    layer.classList.add('pointer-events-auto');
+
+    drawer.classList.remove('translate-x-full');
+    drawer.classList.add('translate-x-0');
+
+    overlay.classList.remove('opacity-0','pointer-events-none');
+    overlay.classList.add('opacity-100','pointer-events-auto');
+
+    document.body.classList.add('overflow-hidden');
+    if (main && 'inert' in HTMLElement.prototype) main.inert = true;
+
+    if (prefersReduced) { drawer.style.transitionDuration='0ms'; overlay.style.transitionDuration='0ms'; }
+  }
+
+  function closeDrawer() {
+    toggle.setAttribute('aria-expanded','false');
+    drawer.setAttribute('aria-hidden','true');
+    overlay.setAttribute('aria-hidden','true');
+
+    drawer.classList.add('translate-x-full');
+    drawer.classList.remove('translate-x-0');
+
+    overlay.classList.add('opacity-0','pointer-events-none');
+    overlay.classList.remove('opacity-100','pointer-events-auto');
+
+    // After the animation ends, disable pointer events on the layer
+    const end = () => {
+      layer.classList.remove('pointer-events-auto');
+      layer.classList.add('pointer-events-none');
+      drawer.removeEventListener('transitionend', end);
+    };
+    drawer.addEventListener('transitionend', end);
+
+    document.body.classList.remove('overflow-hidden');
+    if (main && 'inert' in HTMLElement.prototype) main.inert = false;
+
+    if (prefersReduced) { drawer.style.transitionDuration='0ms'; overlay.style.transitionDuration='0ms'; end(); }
+  }
+
+  toggle?.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') === 'true';
+    open ? closeDrawer() : openDrawer();
+  });
+  closeBtn?.addEventListener('click', closeDrawer);
+  overlay?.addEventListener('click', closeDrawer);
+  drawer?.querySelectorAll('a')?.forEach(a => a.addEventListener('click', closeDrawer));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') closeDrawer();
+  });
+</script>
+

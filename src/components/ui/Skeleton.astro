@@ -1,0 +1,11 @@
+---
+const { class: cls = "" } = Astro.props;
+---
+
+<div
+  class={[
+    "animate-pulse rounded-md bg-[color-mix(in_oklab,var(--fg),transparent_90%)]",
+    cls,
+  ].join(" ")}
+>
+</div>

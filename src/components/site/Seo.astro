@@ -1,0 +1,103 @@
+---
+/**
+ * SEO component for Astro
+ * 
+ * Props:
+ * - title: string
+ * - description: string
+ * - url: string
+ * - image: string (absolute URL or /relative/path)
+ * - type: "website" | "article" | "project" | "profile"
+ * - published?: string (ISO date)
+ * - modified?: string (ISO date)
+ */
+const {
+  title = "Project Atlas",
+  description = "A fast Astro hub showcasing builds, design systems, and open-source projects.",
+  url = "https://yourdomain.com",
+  image = "/og-image.jpg",
+  type = "website",
+  published,
+  modified
+} = Astro.props;
+
+// Normalise URLs
+const fullUrl = new URL(url, Astro.site).toString();
+const imageUrl = image.startsWith("http") ? image : new URL(image, Astro.site).toString();
+
+// --- JSON-LD Generator ---
+const ldWebsite = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  url: fullUrl,
+  name: title,
+  description,
+  publisher: {
+    "@type": "Organization",
+    name: "Your Name",
+    url: "https://yourdomain.com"
+  }
+};
+
+const ldPerson = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Your Name",
+  url: "https://yourdomain.com",
+  sameAs: [
+    "https://github.com/danielphilipjohnson",
+    "https://www.linkedin.com/in/daniel-philip-johnson/",
+    "https://x.com/you"
+  ],
+  jobTitle: "Senior Frontend Engineer",
+  worksFor: {
+    "@type": "Organization",
+    name: "Loan.co.uk"
+  }
+};
+
+const ldProject = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareSourceCode",
+  name: title,
+  description,
+  url: fullUrl,
+  codeRepository: "https://github.com/danielphilipjohnson",
+  programmingLanguage: "TypeScript",
+  author: ldPerson
+};
+
+const ldArticle = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  image: imageUrl,
+  author: ldPerson,
+  datePublished: published,
+  dateModified: modified || published,
+  url: fullUrl,
+  mainEntityOfPage: fullUrl
+};
+
+let jsonLd = ldWebsite;
+if (type === "article") jsonLd = ldArticle;
+if (type === "project") jsonLd = ldProject;
+---
+<!-- SEO Meta -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type === "article" ? "article" : "website"} />
+<meta property="og:url" content={fullUrl} />
+<meta property="og:image" content={imageUrl} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+  {JSON.stringify(jsonLd, null, 2)}
+</script>

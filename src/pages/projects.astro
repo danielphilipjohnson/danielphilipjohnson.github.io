@@ -1,0 +1,150 @@
+---
+import Layout from "../layouts/Shell.astro";
+import { getCollection } from "astro:content";
+
+import FilterBar from "../components/ui/FilterBar.astro";
+import ProjectCard from "../components/ui/ProjectCard.astro";
+
+type Metrics = Record<string, { stars?: number; pushedAt?: string }>;
+
+let metrics: Metrics = {};
+try {
+  metrics = (await import("../data/repos.json")).default;
+} catch {}
+
+// Load projects from content collection
+const all = await getCollection("projects");
+
+const stripMd = (s: string) =>
+  s
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/[#>*_~\-]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const entries = all.map((entry) => {
+  const bodyRaw = entry.body ?? "";
+  const bodyText = stripMd(bodyRaw).toLowerCase();
+  return { entry, bodyText, bodyRaw };
+});
+
+const tags = [...new Set(all.flatMap((p) => p.data.tags))].sort();
+
+const q = (Astro.url.searchParams.get("q") ?? "").toLowerCase();
+const tag = Astro.url.searchParams.get("tag") ?? "";
+
+const filtered = entries
+  .filter(({ entry, bodyText }) => {
+    const t = entry.data.title.toLowerCase();
+    const matchesTag = !tag || entry.data.tags.includes(tag);
+    const matchesQ =
+      q === "" ||
+      t.includes(q) ||
+      bodyText.includes(q) ||
+      entry.data.slug.toLowerCase().includes(q);
+    return matchesTag && matchesQ;
+  })
+  .map((x) => x.entry)
+  .sort((a, b) => {
+    if (a.data.highlight && !b.data.highlight) return -1;
+    if (!a.data.highlight && b.data.highlight) return 1;
+    const ord = (a.data.order ?? 999) - (b.data.order ?? 999);
+    if (ord !== 0) return ord;
+    return a.data.title.localeCompare(b.data.title);
+  });
+
+const summaries = Object.fromEntries(
+  entries.map(({ entry, bodyRaw }) => [
+    entry.id,
+    stripMd(bodyRaw).slice(0, 160),
+  ]),
+);
+---
+
+<Layout title="Project Atlas" description="My active builds, experiments, and favourite releases.">
+  <!-- Hero -->
+  <section class="relative overflow-hidden border-b [border-color:var(--border)] bg-[color-mix(in_oklab,var(--bg)_96%,transparent)] py-20 text-center">
+    <div class="container mx-auto max-w-3xl space-y-6">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight text-[var(--fg)]">
+        Project Atlas
+      </h1>
+      <p class="text-lg text-[var(--muted-fg)] leading-relaxed">
+        A curated index of my ongoing builds, creative experiments, and finished launches.
+        Each project reflects a phase in my craft — from neon interfaces to composable architectures.
+      </p>
+
+      <form action="/projects" method="get" class="relative max-w-md mx-auto mt-6">
+        <input
+          type="search"
+          name="q"
+          value={q}
+          placeholder="Search projects …"
+          class="w-full rounded-lg px-4 py-2 bg-[var(--surface-1)] text-[var(--fg)]
+                 [border:1px_solid_var(--border)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]"
+        />
+        {q && (
+          <button type="button"
+                  onclick="this.form.q.value='';this.form.submit();"
+                  class="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-fg)] hover:text-[var(--accent)]">
+            ×
+          </button>
+        )}
+      </form>
+
+      {tags.length > 0 && (
+        <div class="flex flex-wrap justify-center gap-2 mt-6">
+          <a href="/projects"
+             class={`px-3 py-1 rounded-full text-sm [border:1px_solid_var(--border)] transition-colors
+                     ${tag === "" ? "bg-[var(--accent)] text-black" : "hover:[border-color:var(--accent)] hover:text-[var(--accent)]"}`}>
+            All
+          </a>
+          {tags.map((t) => (
+            <a
+              href={`/projects?tag=${encodeURIComponent(t)}`}
+              class={`px-3 py-1 rounded-full text-sm [border:1px_solid_var(--border)] transition-colors
+                      ${t === tag ? "bg-[var(--accent)] text-black" : "hover:[border-color:var(--accent)] hover:text-[var(--accent)]"}`}
+            >
+              #{t}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 -z-10 opacity-40
+             [background:radial-gradient(circle_at_center,var(--accent)/30_0%,transparent_70%)]"
+    ></div>
+  </section>
+
+  <!-- Projects grid -->
+  <section class="container py-16">
+    <div class="grid [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] gap-6">
+      {filtered.map((p) => (
+        <ProjectCard
+          title={p.data.title}
+          status={p.data.status}
+          stack={p.data.stack}
+          cover={p.data.cover}
+          alt={p.data.title}
+          site={p.data.site}
+          repo={p.data.repo}
+          metrics={p.data.repo ? (metrics[p.data.repo] ?? {}) : {}}
+          highlight={p.data.highlight}
+        >
+          {summaries[p.id] ?? ""}
+        </ProjectCard>
+      ))}
+    </div>
+
+    {filtered.length === 0 && (
+      <p class="mt-12 text-center text-[var(--muted-fg)]">
+        No projects match your filters. Try clearing the search or tag.
+      </p>
+    )}
+  </section>
+</Layout>
