@@ -1,6 +1,5 @@
 ---
 title: "Cyberpunk OS Portfolio"
-slug: "cyberpunk-os"
 repo: "https://github.com/danielphilipjohnson/whomai"
 site: "https://danielphilipjohnson.github.io/whomai/"
 status: "live"
