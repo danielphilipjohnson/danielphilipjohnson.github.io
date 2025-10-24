@@ -9,31 +9,39 @@
 const { tone = "neutral", variant = "soft", pill = false } = Astro.props;
 
 const toneMap: Record<string, string> = {
-  neutral: "var(--border)",
-  success: "var(--status-success)",
-  warn: "var(--status-warn)",
+  neutral: "var(--color-stone-400)",
+  success: "var(--color-success-500)",
+  warn: "var(--color-warning-500)",
   danger: "var(--color-danger-500)",
-  info: "var(--color-water-600)",
+  info: "var(--color-water-500)",
   moss: "var(--color-moss-600)",
 };
 
-const color = toneMap[tone] ?? "var(--border)";
-const base =
-  "inline-flex items-center gap-1 px-3 py-1 text-xs leading-none border";
+const color = toneMap[tone] ?? "var(--color-stone-400)";
+const base = "inline-flex items-center gap-1 px-3 py-1 text-xs leading-none border transition-colors duration-150";
 const shape = pill ? "rounded-full" : "rounded-sm";
 
+/* Accessibility improvements: higher contrast tints and hover focus states */
 const cls =
   variant === "outline"
-    ? `${base} ${shape} text-[color:var(--badge-color)] bg-transparent border-[color:var(--badge-color)]`
+    ? `${base} ${shape}
+    
+       border-[color:var(--badge-color)]
+       hover:bg-[color-mix(in_oklab,var(--badge-color)_15%,var(--bg))]
+       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--badge-color)] focus-visible:ring-offset-2`
     : variant === "solid"
-      ? `${base} ${shape} text-white bg-[color:var(--badge-color)] border-[color:var(--badge-color)]`
-      : /* soft (theme-aware) */
-        `${base} ${shape}
+    ? `${base} ${shape}
+       text-white bg-[color:var(--badge-color)]
+       border-[color:var(--badge-color)]
+       hover:brightness-110 focus-visible:ring-2 focus-visible:ring-offset-2`
+    : /* soft (accessible tint) */
+      `${base} ${shape}
        text-[color:var(--fg)]
-       bg-[color-mix(in_oklab,var(--badge-color)_var(--badge-soft-mix),var(--bg))]
-       border-[color-mix(in_oklab,var(--badge-color)_var(--badge-border-mix),var(--bg))]`;
+       bg-[color-mix(in_oklab,var(--badge-color)_30%,var(--bg))]
+       border-[color-mix(in_oklab,var(--badge-color)_45%,var(--bg))]
+       hover:bg-[color-mix(in_oklab,var(--badge-color)_40%,var(--bg))]
+       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--badge-color)] focus-visible:ring-offset-2`;
 ---
-
 <span class={cls} style={`--badge-color:${color}`}>
   <slot />
 </span>
