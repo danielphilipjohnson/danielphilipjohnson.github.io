@@ -20,6 +20,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.6.0",
     "@fontsource-variable/geist-mono": "^5.2.7",
+    "@lucide/astro": "^0.546.0",
     "@tailwindcss/vite": "^4.1.15",
     "astro": "^5.14.8",
     "tailwindcss": "^4.1.15"
